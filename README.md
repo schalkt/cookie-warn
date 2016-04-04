@@ -7,7 +7,7 @@ Features
 
 - responsive
 - jQuery not required
-- very customisable
+- customizable
 
 Easy usage:
 -----------
