@@ -1,0 +1,76 @@
+#iewarn {
+    position: fixed;
+    background-color: #ffffad;
+    border-top: 3px solid #707070;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    color: #414141;
+    font-size: 16px;
+    font-family: Arial;
+    text-align: center;
+    padding-bottom: 20px;
+    z-index: 99999;
+}
+
+#iewarn h1 {
+    letter-spacing: 0px;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 21px;
+    background-color: #202020;
+    color: #ffffad;
+    padding: 10px;
+    margin: 0px 0px 10px 0px;
+}
+
+#iewarn .text {
+    margin: 0 3%;
+}
+
+#iewarn .list {
+    margin: 1% 0;
+}
+
+#iewarn a {
+    display: inline-block;
+    padding: 4px 30px 6px 30px;
+    margin: 1px;
+    width: 170px;
+    font-size: 16px;
+    text-decoration: none;
+    background-color: #dbd88b;
+    color: #202020;
+}
+
+#iewarn a:hover {
+    color: #ffffad;
+    background-color: #202020;
+}
+
+#iewarn span img {
+    display: inline-block;
+    border: none;
+    height: 18px;
+    width: auto;
+    margin: 1px 12px;
+    vertical-align: bottom;
+}
+
+#iewarn-close {
+    color: #202020;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+* html, * html body/* IE6 Fixed Position Jitter Fix */   {
+    background-image: url(about:blank);
+    background-attachment: fixed;
+}
+
+* html #iewarn /* IE6 position fixed Bottom */
+{
+    position: absolute;
+    bottom: auto;
+    top: expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-(parseInt(this.currentStyle.marginTop,10)||0)-(parseInt(this.currentStyle.marginBottom,10)||0)));
+}
