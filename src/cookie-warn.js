@@ -4,7 +4,7 @@
  * Copyright 2016, Tamás Schalk (github.com/schalkt)
  * Licensed under the MIT
  *
- * @version 1.0.0
+ * @version 1.0.1
  *
  */
 
@@ -37,9 +37,9 @@
  *
  */
 
-"use strict";
-
 (function (fn) {
+
+    "use strict";
 
     // set or get cookie
     var cookie = function (name, value, days) {
@@ -107,8 +107,8 @@
         expire = parseInt(tag.getAttribute('data-expire'));
         style = tag.getAttribute('data-style');
 
-        style1 = '#cookieWarnBox {position:fixed;line-height:32px; bottom:0;left:0;right:0;background-color:#212121;color:#f1f1f1;opacity:0.9;text-align:center;padding:15px;font-size:18px;}';
-        style2 = '#cookieWarnBox span {text-transform:uppercase;cursor:pointer;background-color:#f1f1f1;color:#1188ff;padding:7px 14px;margin-left:10px;}';
+        style1 = '#cookieWarnBox {position:fixed;line-height:24px; bottom:0;left:0;right:0;background-color:#212121;color:#f1f1f1;opacity:0.9;text-align:center;padding:10px;font-size:16px;}';
+        style2 = '#cookieWarnBox span {text-transform:uppercase;cursor:pointer;background-color:#f1f1f1;color:#1188ff;padding:3px 14px;margin-left:10px;}';
         style3 = '#cookieWarnBox span:hover {background-color:#fefefe;} #cookieWarnBox a {text-decoration:none;color:#1188ff;}';
         css = {
 
