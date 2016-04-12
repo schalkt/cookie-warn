@@ -59,7 +59,7 @@
 
         } else {
 
-            days = days ? days : 14;
+            days = days ? days : 365;
             var expire = new Date();
             expire.setDate(expire.getDate() + days);
             value = value + ((days == null) ? "" : "; expires=" + expire.toGMTString());
@@ -96,14 +96,21 @@
 
     document.addEventListener('DOMContentLoaded', function () {
 
-        var tag, text, button, link, info, expire, css, style, style1, style2, style3, body, wbox, more;
+        var data, lang, tag, text, button, link, expire, css, style, style1, style2, style3, body, wbox, info, more;
 
         // get parameters
         tag = document.getElementById('cookieWarn');
-        text = tag.getAttribute('data-text');
-        button = tag.getAttribute('data-button');
-        link = tag.getAttribute('data-link');
-        info = tag.getAttribute('data-info');
+        lang = document.documentElement.lang;
+        data = JSON.parse(tag.getAttribute('data-lang-' + lang));
+
+        if (!data) {
+            return;
+        }
+
+        text = data.text;
+        button = data.button;
+        link = data.link;
+        more = data.more;
         expire = parseInt(tag.getAttribute('data-expire'));
         style = tag.getAttribute('data-style');
 
@@ -129,9 +136,9 @@
         wbox = document.createElement('div');
         wbox.setAttribute("id", "cookieWarnBox");
         wbox.setAttribute("style", style.box);
-        more = (link && info) ? ' <a target="_blank" href="' + link + '">' + info + '</a> ' : '';
+        info = (link && more) ? ' <a target="_blank" href="' + link + '">' + more + '</a> ' : '';
         button = '<span id="cookieWarnClose" onclick="' + fn + '.close(' + expire + ');">' + button + '</span>';
-        wbox.innerHTML = '<div class="text">' + text + more + button + '</div>';
+        wbox.innerHTML = '<div class="text">' + text + info + button + '</div>';
 
         // append to body
         body = document.getElementsByTagName("body")[0];
