@@ -3,16 +3,13 @@
 <head>
     <title>EU Cookie Law warning message demo page</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <script
-            data-lang-hu='{"text" : "Weboldalunk a felhasználói élmény optimalizálása érdekében sütiket használ.",
-            "button" : "Elfogadom", "more" : "További információ az Uniós törvényről",
-            "link" : "http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm"}'
-            data-lang-en='{"text":"Our website uses cookies.","button":"Ok","more":"More info","link":"http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm"}'
+    <script id="cookieWarn" type="text/javascript" src="./../src/cookie-warn.js"
+            data-lang-hu="{'text' : 'Weboldalunk a felhasználói élmény optimalizálása érdekében sütiket használ.',
+            'button' : 'Elfogadom', 'more' : 'További információ az Uniós törvényről',
+            'link' : 'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'}"
+            data-lang-en="{'text':'Our website uses cookies.','button':'Ok','more':'More info','link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'}"
             data-expire="365"
-            data-style="#cookieWarnBox a {}"
-            type="text/javascript"
-            id="cookieWarn"
-            src="./../src/cookie-warn.js">
+            data-style="#cookieWarnBox a {}">
     </script>
 </head>
 <body>

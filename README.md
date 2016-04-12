@@ -7,7 +7,8 @@ Features
 
 - responsive
 - jQuery not required
-- customizable
+- multilanguage support
+- customizable style
 
 Easy usage:
 -----------
@@ -17,22 +18,23 @@ Easy usage:
 ...
 <script
     id="cookieWarn"
-    data-lang-en='{"text":"Our website uses cookies.","button":"Ok","more":"More info","link":"http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm"}'    
+    data-lang-en="{'text':'Our website uses cookies.','button':'Ok','more':'More info','link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'}"
     data-expire="365"
-    data-style="#cookieWarnBox a { color: #ff0000; }"
+    data-style="#cookieWarnBox a { color: orange; }"
     type="text/javascript"
     src="../cookie-warn.min.js">
 </script>
 
 OR
 
-<html lang="en">
+<html lang="de">
 ...
 <div
     id="cookieWarn"
-    data-lang-en='{"text":"Our website uses cookies.","button":"Ok","more":"More info","link":"http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm"}'    
-    data-expire="30"
-    data-style="#cookieWarnBox a { color: #ff0000; }">
+    data-lang-en="{'text':'Our website uses cookies.','button':'Ok','more':'More info','link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'}"
+    data-lang-de="{'text':'Our website uses cookies.','button':'Ok','more':'More info','link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'}"
+    data-expire="90"
+    data-style="#cookieWarnBox a { color: red; }">
 </div>
 
 ```
