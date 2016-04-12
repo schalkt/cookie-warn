@@ -41,7 +41,7 @@
     var data, lang, tag, text, button, link, expire, css, style, style1, style2, style3, body, wbox, info, more;
     tag = document.getElementById("cookieWarn");
     lang = document.documentElement.lang;
-    data = JSON.parse(tag.getAttribute("data-lang-" + lang));
+    data = JSON.parse(tag.getAttribute("data-lang-" + lang).replace(/'/g, '"'));
     if (!data) {
       return;
     }
@@ -51,7 +51,7 @@
     more = data.more;
     expire = parseInt(tag.getAttribute("data-expire"));
     style = tag.getAttribute("data-style");
-    style1 = "#cookieWarnBox {position:fixed;line-height:24px; bottom:0;left:0;right:0;background-color:#212121;color:#f1f1f1;opacity:0.9;text-align:center;padding:10px;font-size:16px;}";
+    style1 = "#cookieWarnBox {position:fixed;z-index:999999;line-height:24px;bottom:0;left:0;right:0;background-color:#212121;color:#f1f1f1;opacity:0.9;text-align:center;padding:10px;font-size:16px;}";
     style2 = "#cookieWarnBox span {text-transform:uppercase;cursor:pointer;background-color:#f1f1f1;color:#1188ff;padding:3px 14px;margin-left:10px;}";
     style3 = "#cookieWarnBox span:hover {background-color:#fefefe;} #cookieWarnBox a {text-decoration:none;color:#1188ff;}";
     css = {type:"text/css", style:document.createElement("style"), content:style1 + style2 + style3 + style, append:function() {
