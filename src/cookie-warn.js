@@ -4,7 +4,7 @@
  * Copyright 2016, Tamas Schalk (github.com/schalkt)
  * Licensed under the MIT
  *
- * @version 1.0.2
+ * @version 1.1.0
  *
  */
 
@@ -84,11 +84,13 @@
             cookie(fn, true, expire);
 
             // remove warning box
-            var obj = document.getElementById('cookieWarnBox');
+            var wbox = document.getElementById('cookieWarnBox');
 
-            if (obj) {
-                obj.parentNode.removeChild(obj);
-            }
+            wbox.className = wbox.className + ' closed';
+
+            // if (obj) {
+            //     obj.parentNode.removeChild(obj);
+            // }
 
         }
 
@@ -96,10 +98,16 @@
 
     document.addEventListener('DOMContentLoaded', function () {
 
-        var data, lang, tag, text, button, link, expire, css, style, style1, style2, style3, body, wbox, info, more;
+        var data, lang, tag, text, button, link, expire, css, style, body, wbox, info, more, classes, bootstrap, delay, jquery;
 
         // get parameters
         tag = document.getElementById('cookieWarn');
+        
+        if (!tag) {
+            console.error('cookieWarn element not found by id');
+            return;
+        }
+
         lang = document.documentElement.lang;
         data = JSON.parse(tag.getAttribute('data-lang-' + lang).replace(/'/g, '"'));
 
@@ -111,21 +119,36 @@
         button = data.button;
         link = data.link;
         more = data.more;
+       // bootstrap = tag.getAttribute('data-bootstrap');
+        delay = tag.getAttribute('data-delay');
         expire = parseInt(tag.getAttribute('data-expire'));
         style = tag.getAttribute('data-style');
-
-        style1 = '#cookieWarnBox {position:fixed;z-index:999999;line-height:24px;bottom:0;left:0;right:0;background-color:#212121;color:#f1f1f1;opacity:0.9;text-align:center;padding:10px;font-size:16px;}';
-        style2 = '#cookieWarnBox span {text-transform:uppercase;cursor:pointer;background-color:#f1f1f1;color:#1188ff;padding:3px 14px;margin-left:10px;}';
-        style3 = '#cookieWarnBox span:hover {background-color:#fefefe;} #cookieWarnBox a {text-decoration:none;color:#1188ff;}';
+        classes = tag.getAttribute('data-class');
+        
+        bootstrap = (window.jQuery && typeof $().modal == 'function');       
+        
         css = {
-
-            type: 'text/css', style: document.createElement('style'),
-            content: style1 + style2 + style3 + style,
+        
+            style: [
+                '#cookieWarnBox {transition: all 0.5s ease; position:fixed;z-index:999999;line-height:24px;bottom:-20px;left:0;right:0;opacity:0;text-align:center;padding:10px;background-color:#212121}',
+                '#cookieWarnBox.loaded { opacity: 0.9; bottom: 0px; } #cookieWarnBox.closed { opacity: 0; bottom: -20px;  }'
+            ],
+            style2: [
+                '#cookieWarnBox {font-family: Verdana;line-height:24px;color:#f1f1f1;font-size:14px;}',
+                '#cookieWarnBox .btn {text-transform:uppercase;cursor:pointer;background-color:#f1f1f1;color:#659fda;padding:3px 14px;margin-left:10px;}',
+                '#cookieWarnBox .btn:hover {background-color:#ffffff;color:#4d78a5;} #cookieWarnBox a {text-decoration:none;color:#659fda}',
+            ],            
+            type: 'text/css',
+            element: document.createElement('style'),
             append: function () {
 
-                this.style.type = this.type;
-                this.style.appendChild(document.createTextNode(this.content));
-                document.head.appendChild(this.style);
+                if (bootstrap === undefined || bootstrap === 'false' || bootstrap === false) {
+                    this.style = this.style.concat(this.style2);
+                } 
+
+                this.element.type = this.type;
+                this.element.appendChild(document.createTextNode(this.style.join(' ')));
+                document.head.appendChild(this.element);
 
             }
         };
@@ -134,18 +157,25 @@
 
         // create warning box
         wbox = document.createElement('div');
-        wbox.setAttribute("id", "cookieWarnBox");
-        wbox.setAttribute("style", style.box);
+        wbox.setAttribute("id", "cookieWarnBox");       
+
+        if (classes) {
+            wbox.setAttribute("class", classes);
+        }
+
         info = (link && more) ? ' <a target="_blank" href="' + link + '">' + more + '</a> ' : '';
-        button = '<span id="cookieWarnClose" onclick="' + fn + '.close(' + expire + ');">' + button + '</span>';
+        button = '<span class="btn btn-default" id="cookieWarnClose" onclick="' + fn + '.close(' + expire + ');">' + button + '</span>';
         wbox.innerHTML = '<div class="text">' + text + info + button + '</div>';
 
         // append to body
         body = document.getElementsByTagName("body")[0];
         body.appendChild(wbox);
 
+        setTimeout(function(){
+            wbox.className = wbox.className + ' loaded';
+        }, delay ? parseInt(delay) : 500);
+
+
     }, false);
 
-
 })('cookieWarn');
-

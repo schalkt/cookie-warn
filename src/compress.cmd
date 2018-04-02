@@ -1,6 +1,6 @@
 
 set inputs=cookie-warn.js
-set options_min=--language_in ECMASCRIPT5 --compilation_level SIMPLE
+set options_min=--language_in ECMASCRIPT5 --compilation_level SIMPLE_OPTIMIZATIONS
 set options_debug=--language_in ECMASCRIPT5 --compilation_level WHITESPACE_ONLY --formatting PRETTY_PRINT
 
 rem Google Closure Compiler

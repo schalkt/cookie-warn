@@ -20,6 +20,8 @@ Easy usage:
     id="cookieWarn"
     data-lang-en="{'text':'Our website uses cookies.','button':'Ok','more':'More info','link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'}"
     data-expire="365"
+    data-delay="500"
+    data-class="customCookieWarn"
     data-style="#cookieWarnBox a { color: orange; }"
     type="text/javascript"
     src="../cookie-warn.min.js">
@@ -34,7 +36,6 @@ OR
     data-lang-en="{'text':'Our website uses cookies.','button':'Ok','more':'More info','link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'}"
     data-lang-de="{'text':'Our website uses cookies.','button':'Ok','more':'More info','link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'}"
     data-expire="90"
-    data-style="#cookieWarnBox a { color: red; }">
 </div>
 
 ```
