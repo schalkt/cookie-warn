@@ -1,38 +1,54 @@
 /**
  * @preserve cookie-warn.js
  *
- * Copyright 2016, Tamas Schalk (github.com/schalkt)
+ * Copyright 2016-2018, Tamas Schalk (github.com/schalkt)
  * Licensed under the MIT
  *
- * @version 1.1.0
+ * @version 2.0.0
  *
  */
 
 /**
- * USAGE:
- *
+ * EXAMPLE 1:
+ * 
+ *    <html lang="en" ... >
+ *    ...
  *    <script
- *      id="cookieWarn"
- *        data-text="Our website uses cookies."
- *        data-button="Ok"
- *        data-info="More info"
- *        data-link="http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm"
- *        data-expire="1"
- *        data-style="#cookieWarnBox a { color: #ff0000; }"
+ *        id="cookieWarn"
+ *        data-lang-en="{
+ *              'text':'Our website uses cookies.',
+ *              'button':'I accept',
+ *              'more':'Click here for more information',
+ *              'link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'
+ *        }"
+ *        data-expire="365" (optional, default 365 day)
+ *        data-delay="750" (optional, default 500)
+ *        data-class="customCookieWarning" (optional)
+ *        data-style="#cookieWarnBox a { color: #ff0000; }" (optional)
  *        type="text/javascript"
  *        src="../cookie-warn.min.js">
  *    </script>
  *
- * OR
- *
+ * EXAMPLE 2:
+ *    
+ *    <html lang="en" ... >
+ *    ...
+ *    <script type="text/javascript" src="../cookie-warn.min.js"></script>
+ * 
  *    <div
  *        id="cookieWarn"
- *        data-text="Our website uses cookies."
- *        data-button="Ok"
- *        data-info="More info"
- *        data-link="http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm"
- *        data-expire="1"
- *        data-style="#cookieWarnBox a { color: #ff0000; }">
+ *        data-lang-en="{
+ *              'text':'Our website uses cookies.',
+ *              'button':'I accept',
+ *              'more':'Click here for more information',
+ *              'link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'
+ *        }"
+ *        data-lang-hu="{
+ *              'text':'Weboldalunk sütiket használ.',
+ *              'button':'Elfogadom',
+ *              'more':'Kattints ide a bővebb információért',
+ *              'link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'
+ *        }">
  *    </div>
  *
  */
@@ -49,12 +65,15 @@
             var i, x, y, cookies = document.cookie.split(";");
 
             for (i = 0; i < cookies.length; i++) {
+                
                 x = cookies[i].substr(0, cookies[i].indexOf("="));
                 y = cookies[i].substr(cookies[i].indexOf("=") + 1);
                 x = x.replace(/^\s+|\s+$/g, "");
+
                 if (x == name) {
                     return y;
                 }
+
             }
 
         } else {
@@ -69,8 +88,7 @@
 
     };
 
-
-    // if cookie true return
+    // if cookie available then return
     if (cookie(fn)) {
         return;
     }
@@ -84,7 +102,7 @@
             cookie(fn, true, expire);
 
             // remove warning box
-            var wbox = document.getElementById('cookieWarnBox');
+            var wbox = document.getElementById(fn + 'Box');
 
             wbox.className = wbox.className + ' closed';
 
@@ -119,7 +137,6 @@
         button = data.button;
         link = data.link;
         more = data.more;
-       // bootstrap = tag.getAttribute('data-bootstrap');
         delay = tag.getAttribute('data-delay');
         expire = parseInt(tag.getAttribute('data-expire'));
         style = tag.getAttribute('data-style');
@@ -130,19 +147,22 @@
         css = {
         
             style: [
-                '#cookieWarnBox {transition: all 0.5s ease; position:fixed;z-index:999999;line-height:24px;bottom:-20px;left:0;right:0;opacity:0;text-align:center;padding:10px;background-color:#212121}',
-                '#cookieWarnBox.loaded { opacity: 0.9; bottom: 0px; } #cookieWarnBox.closed { opacity: 0; bottom: -20px;  }'
+                '#' + fn + 'Box {transition:all 0.5s ease;position:fixed;z-index:999999;bottom:-20px;left:0;right:0;opacity:0;text-align:center;padding:10px;background-color:#212121}',
+                '#' + fn + 'Box .btn {white-space:nowrap}',
+                '#' + fn + 'Box.loaded {opacity:0.9;bottom:0px}',
+                '#' + fn + 'Box.closed {opacity:0;bottom:-20px}'
             ],
             style2: [
-                '#cookieWarnBox {font-family: Verdana;line-height:24px;color:#f1f1f1;font-size:14px;}',
-                '#cookieWarnBox .btn {text-transform:uppercase;cursor:pointer;background-color:#f1f1f1;color:#659fda;padding:3px 14px;margin-left:10px;}',
-                '#cookieWarnBox .btn:hover {background-color:#ffffff;color:#4d78a5;} #cookieWarnBox a {text-decoration:none;color:#659fda}',
+                '#' + fn + 'Box {font-family: Verdana;line-height:24px;color:#f1f1f1;font-size:14px;}',
+                '#' + fn + 'Box .btn {text-transform:uppercase;cursor:pointer;background-color:#f1f1f1;color:#659fda;padding:3px 14px;margin-left:10px;}',
+                '#' + fn + 'Box .btn:hover {background-color:#ffffff;color:#4d78a5;}',
+                '#' + fn + 'Box a {text-decoration:none;color:#659fda}',
             ],            
             type: 'text/css',
             element: document.createElement('style'),
             append: function () {
 
-                if (bootstrap === undefined || bootstrap === 'false' || bootstrap === false) {
+                if (!bootstrap) {
                     this.style = this.style.concat(this.style2);
                 } 
 
@@ -157,14 +177,14 @@
 
         // create warning box
         wbox = document.createElement('div');
-        wbox.setAttribute("id", "cookieWarnBox");       
+        wbox.setAttribute("id", fn + "Box");       
 
         if (classes) {
             wbox.setAttribute("class", classes);
         }
 
         info = (link && more) ? ' <a target="_blank" href="' + link + '">' + more + '</a> ' : '';
-        button = '<span class="btn btn-default" id="cookieWarnClose" onclick="' + fn + '.close(' + expire + ');">' + button + '</span>';
+        button = '<span class="btn btn-default" id="' + fn + 'Close" onclick="' + fn + '.close(' + expire + ');">' + button + '</span>';
         wbox.innerHTML = '<div class="text">' + text + info + button + '</div>';
 
         // append to body
