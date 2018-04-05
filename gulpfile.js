@@ -90,7 +90,7 @@ gulp.task('bump', function () {
 
 	return gulp.src(['./package.json'])
 		.pipe(bump({type: 'patch', indent: 4}))
-		.pipe(gulp.dest('./'))
+		.pipe(gulp.dest('./'));
 });
 
 
@@ -106,7 +106,7 @@ gulp.task('version', function (callback) {
 	])
 		.pipe(replace(/@version\s\d+\.\d+\.\d+/g, '@version ' + package.version))
 		.pipe(gulp.dest(SRC))
-		.pipe(debug())
+		.pipe(debug());
 
 });
 
@@ -118,7 +118,8 @@ gulp.task('dev', function (callback) {
 		["js"],
 		["version"],
 		callback
-	)
+	);
+
 });
 
 gulp.task('prod', function (callback) {
@@ -130,7 +131,8 @@ gulp.task('prod', function (callback) {
 		["js-min"],
 		["version"],
 		callback
-	)
+	);
+	
 });
 
 
