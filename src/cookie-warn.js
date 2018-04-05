@@ -1,12 +1,3 @@
-/**
- * @preserve cookie-warn.js
- *
- * Copyright 2016-2018, Tamas Schalk (github.com/schalkt)
- * Licensed under the MIT
- *
- * @version 2.0.0
- *
- */
 
 /**
  * EXAMPLE 1:
