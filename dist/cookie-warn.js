@@ -1,7 +1,7 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  * 
- * @version v2.0.1
+ * @version v2.0.3
  * @link http://schalk.hu/projects/cookie-warn/demo/index.html
  * @author Tamas Schalk <github@schalk.hu> (https://github.com/schalkt)
  * @license MIT
@@ -104,8 +104,6 @@
             if (values.length > 0) {
                 value = value + "; " + values.join("; ");
             }
-
-            console.log('cookie', name, value);
 
             document.cookie = escape(name) + "=" + value;
 
@@ -218,8 +216,6 @@
             domain ? "'" + domain + "'" : 'null',
             secure == "true" ? 1 : 0,
         ].join(',');
-
-        console.log(args);
 
         info = (link && more) ? ' <a target="_blank" href="' + link + '">' + more + '</a> ' : '';
         button = '<span class="btn btn-default" id="' + fn + 'Close" onclick="' + fn + '.close(' + args + ');">' + button + '</span>';

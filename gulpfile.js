@@ -128,7 +128,7 @@ gulp.task('prod', function (callback) {
 
 	runSequence(
 		["bump"],
-		["js-min"],
+		["js","js-min"],
 		["version"],
 		callback
 	);
