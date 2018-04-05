@@ -97,8 +97,6 @@
                 value = value + "; " + values.join("; ");
             }
 
-            console.log('cookie', name, value);
-
             document.cookie = escape(name) + "=" + value;
 
         }
@@ -210,8 +208,6 @@
             domain ? "'" + domain + "'" : 'null',
             secure == "true" ? 1 : 0,
         ].join(',');
-
-        console.log(args);
 
         info = (link && more) ? ' <a target="_blank" href="' + link + '">' + more + '</a> ' : '';
         button = '<span class="btn btn-default" id="' + fn + 'Close" onclick="' + fn + '.close(' + args + ');">' + button + '</span>';
