@@ -61,3 +61,6 @@ Features
  </div>
 
 ```
+# TODO
+
+- add "I disagree" button (link to the Ghostery webpage)
