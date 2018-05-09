@@ -2,6 +2,17 @@ Cookie Warn
 =============
 EU Cookie Law warning message
 
+[![preview](https://img.shields.io/badge/preview-click_here-green.svg?style=flat-square)](http://schalk.hu/projects/cookie-warn/demo/)
+[![npm](https://img.shields.io/npm/dt/cookie-warn.svg?style=flat-square)](https://www.npmjs.com/package/cookie-warn)
+[![GitHub issues](https://img.shields.io/github/issues/schalkt/cookie-warn.svg?style=flat-square)](https://github.com/schalkt/cookie-warn/issues)
+[![npm](https://img.shields.io/npm/v/cookie-warn.svg?style=flat-square)](https://www.npmjs.com/package/cookie-warn)
+[![schalkt](https://img.shields.io/david/schalkt/cookie-warn.svg?style=flat-square)](https://david-dm.org/schalkt/cookie-warn)
+
+[![bitHound Overall Score](https://www.bithound.io/github/schalkt/cookie-warn/badges/score.svg)](https://www.bithound.io/github/schalkt/cookie-warn)
+[![bitHound Dependencies](https://www.bithound.io/github/schalkt/cookie-warn/badges/dependencies.svg)](https://www.bithound.io/github/schalkt/cookie-warn/develop/dependencies/npm)
+[![bitHound Code](https://www.bithound.io/github/schalkt/cookie-warn/badges/code.svg)](https://www.bithound.io/github/schalkt/cookie-warn)
+[![jsDelivr](https://data.jsdelivr.com/v1/package/npm/cookie-warn/badge)](https://www.jsdelivr.com/package/npm/cookie-warn)
+
 Features
 --------
 
