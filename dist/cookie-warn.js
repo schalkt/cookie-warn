@@ -1,7 +1,7 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  * 
- * @version v2.0.4
+ * @version v3.0.1
  * @link http://schalk.hu/projects/cookie-warn/demo/index.html
  * @author Tamas Schalk <github@schalk.hu> (https://github.com/schalkt)
  * @license MIT
@@ -15,10 +15,14 @@
  *    <script
  *        id="cookieWarn"
  *        data-lang-en="{
- *              'text':'Our website uses cookies.',
- *              'button':'I accept',
- *              'more':'Click here for more information',
- *              'link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'
+ *              'text': 'Our website uses cookies.',
+ *              'more_text': 'Click here for more information',
+ *              'more_link': 'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm',
+ *              'accept_text': 'I accept',
+ *              'reject_text': 'I reject',
+ *              'reject_info': 'You can disable unwanted cookies by using this program',
+ *              'reject_link': 'https://www.ghostery.com/'
+ *           },
  *        }"
  *        data-expire="365" (optional, default 365 day)
  *        data-domain="*.domain.tld" (cookie domain, optional)
@@ -133,49 +137,57 @@
             //     obj.parentNode.removeChild(obj);
             // }
 
+        },
+
+        reject: function () {
+           
+            // remove warning box
+            var wbox = document.getElementById(fn + 'Box');
+
+            wbox.className = wbox.className + ' reject';
+
+            // if (obj) {
+            //     obj.parentNode.removeChild(obj);
+            // }
+
         }
 
     };
 
     document.addEventListener('DOMContentLoaded', function () {
 
-        var data, lang, tag, text, button, link, domain, path, expire, secure, css, style, body, wbox, info, more, classes, bootstrap, delay, args;
-
         // get parameters
-        tag = document.getElementById('cookieWarn');
+        var tag = document.getElementById('cookieWarn');
 
         if (!tag) {
             console.error('cookieWarn element not found by id');
             return;
         }
 
-        lang = document.documentElement.lang;
-        data = JSON.parse(tag.getAttribute('data-lang-' + lang).replace(/'/g, '"'));
+        var lang = document.documentElement.lang;
+        var data = JSON.parse(tag.getAttribute('data-lang-' + lang).replace(/'/g, '"'));
 
         if (!data) {
             return;
         }
 
-        text = data.text;
-        button = data.button;
-        link = data.link;
-        more = data.more;
+        var delay = parseInt(tag.getAttribute('data-delay'));
+        var domain = tag.getAttribute('data-domain');
+        var path = tag.getAttribute('data-path');
+        var secure = tag.getAttribute('data-secure');
+        var expire = parseInt(tag.getAttribute('data-expire'));
+        var style = tag.getAttribute('data-style');
+        var classes = tag.getAttribute('data-class');
 
-        delay = parseInt(tag.getAttribute('data-delay'));
-        domain = tag.getAttribute('data-domain');
-        path = tag.getAttribute('data-path');
-        secure = tag.getAttribute('data-secure');
-        expire = parseInt(tag.getAttribute('data-expire'));
-        style = tag.getAttribute('data-style');
-        classes = tag.getAttribute('data-class');
+        var bootstrap = (window.jQuery && typeof $().modal == 'function');
 
-        bootstrap = (window.jQuery && typeof $().modal == 'function');
-
-        css = {
+        var css = {
 
             style: [
                 '#' + fn + 'Box {transition:all 0.4s ease-in-out;position:fixed;z-index:999999;bottom:-20px;left:0;right:0;opacity:0;text-align:center;padding:10px;background-color:#212121}',
                 '#' + fn + 'Box .btn {white-space:nowrap}',
+                '#' + fn + 'Box .reject_more {padding:0px 10px;display:none;}',
+                '#' + fn + 'Box.reject .reject_more {display:block;}',
                 '#' + fn + 'Box.loaded {opacity:0.9;bottom:0px}',
                 '#' + fn + 'Box.closed {opacity:0;bottom:-20px}'
             ],
@@ -203,26 +215,37 @@
         css.append();
 
         // create warning box
-        wbox = document.createElement('div');
+        var wbox = document.createElement('div');
         wbox.setAttribute("id", fn + "Box");
 
         if (classes) {
             wbox.setAttribute("class", classes);
         }
 
-        args = [
+        var args = [
             expire ? expire : 'null',
             path ? "'" + path + "'" : 'null',
             domain ? "'" + domain + "'" : 'null',
             secure == "true" ? 1 : 0,
         ].join(',');
 
-        info = (link && more) ? ' <a target="_blank" href="' + link + '">' + more + '</a> ' : '';
-        button = '<span class="btn btn-default" id="' + fn + 'Close" onclick="' + fn + '.close(' + args + ');">' + button + '</span>';
-        wbox.innerHTML = '<div class="text">' + text + info + button + '</div>';
+        console.log(data);
+
+        var info = (data.more_link && data.more_text) ? ' <a target="_blank" href="' + data.more_link + '">' + data.more_text + '</a> ' : '';
+        var accept_button = '<span class="btn btn-default" id="' + fn + 'Close" onclick="' + fn + '.close(' + args + ');">' + data.accept_text + '</span>';
+
+        if (data.reject_text) {
+            var reject_button = '<span class="btn btn-warning" onclick="' + fn + '.reject();">' + data.reject_text + '</span>';
+            var reject_content = '<span class="reject_more">' + data.reject_info + ' <a target="_blank" href="' + data.reject_link + '">' + data.reject_link + '</a></span>';
+        } else {
+            var reject_button = '';
+            var reject_content = '';
+        }
+
+        wbox.innerHTML = '<div class="text">' + data.text + info + accept_button + reject_button + reject_content + '</div>';
 
         // append to body
-        body = document.getElementsByTagName("body")[0];
+        var body = document.getElementsByTagName("body")[0];
         body.appendChild(wbox);
 
         setTimeout(function () {
