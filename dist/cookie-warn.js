@@ -1,7 +1,7 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  * 
- * @version v3.0.1
+ * @version v3.0.2
  * @link http://schalk.hu/projects/cookie-warn/demo/index.html
  * @author Tamas Schalk <github@schalk.hu> (https://github.com/schalkt)
  * @license MIT
@@ -45,15 +45,15 @@
  *        id="cookieWarn"
  *        data-lang-en="{
  *              'text':'Our website uses cookies.',
- *              'button':'I accept',
- *              'more':'Click here for more information',
- *              'link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'
+ *              'accept_text':'I accept',
+ *              'more_text':'Click here for more information',
+ *              'more_link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'
  *        }"
  *        data-lang-hu="{
  *              'text':'Weboldalunk sütiket használ.',
- *              'button':'Elfogadom',
- *              'more':'Kattints ide a bővebb információért',
- *              'link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'
+ *              'accept_text':'Elfogadom',
+ *              'more_text':'Kattints ide a bővebb információért',
+ *              'more_link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'
  *        }">
  *    </div>
  *
