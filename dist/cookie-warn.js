@@ -1,7 +1,7 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  * 
- * @version v3.0.2
+ * @version v3.0.3
  * @link http://schalk.hu/projects/cookie-warn/demo/index.html
  * @author Tamas Schalk <github@schalk.hu> (https://github.com/schalkt)
  * @license MIT
@@ -130,25 +130,15 @@
 
             // remove warning box
             var wbox = document.getElementById(fn + 'Box');
-
             wbox.className = wbox.className + ' closed';
-
-            // if (obj) {
-            //     obj.parentNode.removeChild(obj);
-            // }
 
         },
 
         reject: function () {
            
-            // remove warning box
+            // show reject information
             var wbox = document.getElementById(fn + 'Box');
-
             wbox.className = wbox.className + ' reject';
-
-            // if (obj) {
-            //     obj.parentNode.removeChild(obj);
-            // }
 
         }
 
@@ -207,7 +197,7 @@
 
                 this.element.type = this.type;
                 this.element.appendChild(document.createTextNode(this.style.join(' ')));
-                document.head.appendChild(this.element);
+                document.head.insertBefore(this.element, document.head.childNodes[0]);
 
             }
         };
@@ -228,8 +218,6 @@
             domain ? "'" + domain + "'" : 'null',
             secure == "true" ? 1 : 0,
         ].join(',');
-
-        console.log(data);
 
         var info = (data.more_link && data.more_text) ? ' <a target="_blank" href="' + data.more_link + '">' + data.more_text + '</a> ' : '';
         var accept_button = '<span class="btn btn-default" id="' + fn + 'Close" onclick="' + fn + '.close(' + args + ');">' + data.accept_text + '</span>';
