@@ -79,3 +79,6 @@ Features
  </div>
 
 ```
+
+# TODO
+- store cookie when reject?
