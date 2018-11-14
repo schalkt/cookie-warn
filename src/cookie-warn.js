@@ -206,7 +206,7 @@
 
         var args = [
             expire ? expire : 'null',
-            path ? "'" + path + "'" : 'null',
+            path ? "'" + path + "'" : '/',
             domain ? "'" + domain + "'" : 'null',
             secure == "true" ? 1 : 0,
         ].join(',');

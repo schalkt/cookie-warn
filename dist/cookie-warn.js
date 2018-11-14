@@ -1,7 +1,7 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  * 
- * @version v3.0.6
+ * @version v3.0.7
  * @link http://schalk.hu/projects/cookie-warn/demo/index.html
  * @author Tamas Schalk (https://github.com/schalkt)
  * @license MIT
@@ -214,7 +214,7 @@
 
         var args = [
             expire ? expire : 'null',
-            path ? "'" + path + "'" : 'null',
+            path ? "'" + path + "'" : '/',
             domain ? "'" + domain + "'" : 'null',
             secure == "true" ? 1 : 0,
         ].join(',');
