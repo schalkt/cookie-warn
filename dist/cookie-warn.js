@@ -1,12 +1,11 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  * 
- * @version v3.0.5
+ * @version v3.0.6
  * @link http://schalk.hu/projects/cookie-warn/demo/index.html
  * @author Tamas Schalk (https://github.com/schalkt)
  * @license MIT
  */
-
 /**
  * EXAMPLE 1:
  * 
@@ -135,7 +134,7 @@
         },
 
         reject: function () {
-           
+
             // show reject information
             var wbox = document.getElementById(fn + 'Box');
             wbox.className = wbox.className + ' reject';
@@ -144,7 +143,8 @@
 
     };
 
-    document.addEventListener('DOMContentLoaded', function () {
+
+    var warn = function () {
 
         // get parameters
         var tag = document.getElementById('cookieWarn');
@@ -240,7 +240,21 @@
             wbox.className = wbox.className + ' loaded';
         }, delay ? parseInt(delay) : 500);
 
+    }
 
-    }, false);
+
+    var isDOMready = function(){
+
+        if (document.readyState == 'complete') {        
+            warn();
+        } else {
+            setTimeout(function () {
+                isDOMready();
+            }, 1000);
+        }
+
+    };
+
+    isDOMready();
 
 })('cookieWarn');

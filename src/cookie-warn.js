@@ -1,4 +1,3 @@
-
 /**
  * EXAMPLE 1:
  * 
@@ -127,7 +126,7 @@
         },
 
         reject: function () {
-           
+
             // show reject information
             var wbox = document.getElementById(fn + 'Box');
             wbox.className = wbox.className + ' reject';
@@ -136,7 +135,8 @@
 
     };
 
-    document.addEventListener('DOMContentLoaded', function () {
+
+    var warn = function () {
 
         // get parameters
         var tag = document.getElementById('cookieWarn');
@@ -232,7 +232,21 @@
             wbox.className = wbox.className + ' loaded';
         }, delay ? parseInt(delay) : 500);
 
+    }
 
-    }, false);
+
+    var isDOMready = function(){
+
+        if (document.readyState == 'complete') {        
+            warn();
+        } else {
+            setTimeout(function () {
+                isDOMready();
+            }, 1000);
+        }
+
+    };
+
+    isDOMready();
 
 })('cookieWarn');
