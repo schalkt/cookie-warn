@@ -20,19 +20,19 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-batch": "^1.0.5",
-    "gulp-bump": "^2.8.0",
+    "gulp-bump": "^3.1.1",
     "gulp-concat": "^2.6.1",
-    "gulp-debug": "^3.1.0",
-    "gulp-header": "^1.8.9",
-    "gulp-order": "^1.1.1",
+    "gulp-debug": "^4.0.0",
+    "gulp-header": "^2.0.5",
+    "gulp-order": "^1.2.0",
     "gulp-if": "^2.0.2",
-    "gulp-rename": "^1.2.2",
-    "gulp-replace": "^0.6.1",
-    "gulp-uglify": "^3.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-replace": "^1.0.0",
+    "gulp-uglify": "^3.0.1",
     "gulp-util": "^3.0.8",
-    "gulp-watch": "^4.3.11",
-    "gulp-gzip": "^1.4.0",
-    "run-sequence": "^2.2.0"
+    "gulp-watch": "^5.0.1",
+    "gulp-gzip": "^1.4.2",
+    "run-sequence": "^2.2.1"
 
   },
   "dependencies": {}

@@ -1,17 +1,17 @@
-Cookie Warn
-=============
+# Cookie Warn
+
 EU Cookie Law warning message
 
 [![preview](https://img.shields.io/badge/preview-click_here-green.svg?style=flat-square)](http://schalk.hu/projects/cookie-warn/demo/)
 [![npm](https://img.shields.io/npm/dt/cookie-warn.svg?style=flat-square)](https://www.npmjs.com/package/cookie-warn)
 [![GitHub issues](https://img.shields.io/github/issues/schalkt/cookie-warn.svg?style=flat-square)](https://github.com/schalkt/cookie-warn/issues)
-[![npm](https://img.shields.io/npm/v/cookie-warn.svg?style=flat-square)](https://www.npmjs.com/package/cookie-warn)
 [![schalkt](https://img.shields.io/david/schalkt/cookie-warn.svg?style=flat-square)](https://david-dm.org/schalkt/cookie-warn)
 [![Build Status](https://travis-ci.org/schalkt/cookie-warn.svg?branch=master)](https://travis-ci.org/schalkt/cookie-warn)
+[![npm](https://img.shields.io/npm/v/cookie-warn.svg?style=flat-square)](https://www.npmjs.com/package/cookie-warn)
 [![jsDelivr](https://data.jsdelivr.com/v1/package/npm/cookie-warn/badge)](https://www.jsdelivr.com/package/npm/cookie-warn)
 
-Features
---------
+## Features
+
 
 - responsive
 - jQuery not required
@@ -20,12 +20,11 @@ Features
 - Bootstrap detect
 - adjustable delay and expire days
 
-# Easy usage:
+## Easy usage
 
+### Example 1
 
-## Example 1
-
-```
+```html
 <html lang="en" ... >
 ...
 <script
@@ -52,13 +51,13 @@ Features
 </script>
 ```
 
-## Example 2
+### Example 2
 
-```
+```html
  <html lang="en" ... >
  ...
  <script type="text/javascript" src="../cookie-warn.min.js"></script>
- 
+
  <div
      id="cookieWarn"
      data-lang-en="{
@@ -77,5 +76,9 @@ Features
 
 ```
 
-# TODO
-- store cookie when reject?
+## TODO
+
+- store cookie when rejected
+- if accepted call a function (callMeWhenCookiesAccepted)
+- add more info to the demo page (show cookie value)
+- accept for 1 day, 1 week, 1 month, 1 year
