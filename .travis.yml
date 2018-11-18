@@ -2,6 +2,27 @@ language: node_js
 node_js:
   - "8"
 cache: yarn
+branches:
+  only:
+  - master
 before_script:
   - yarn
 script: gulp prod
+after_success:
+  - git reset -hard
+before_deploy:
+  - tar -zcf ${TRAVIS_BUILD_DIR}${REPO}-${BUILD_ENV}-${TRAVIS_TAG}-${TRAVIS_BUILD_NUMBER}.tar.gz ${REPO}
+deploy:
+  - provider: npm
+    skip_cleanup: true
+    email: "npm@schalk.hu"
+    api_key: "d11c907e-2a5f-4d34-b503-f9e946147b82"
+    on:
+      branch: master
+  - provider: releases
+    skip_cleanup: true
+    api_key: $GITHUB_OAUTH_TOKEN
+    file: ${TRAVIS_BUILD_DIR}${REPO}-${BUILD_ENV}-${TRAVIS_TAG}-${TRAVIS_BUILD_NUMBER}.tar.gz
+    on:
+      branch: master
+      tags: true
