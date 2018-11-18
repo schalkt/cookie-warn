@@ -10,8 +10,6 @@ before_script:
 script: gulp prod
 after_success:
   - git reset -hard
-before_deploy:
-  - tar -zcf ${TRAVIS_BUILD_DIR}${REPO}-${BUILD_ENV}-${TRAVIS_TAG}-${TRAVIS_BUILD_NUMBER}.tar.gz ${REPO}
 deploy:
   - provider: npm
     skip_cleanup: true
