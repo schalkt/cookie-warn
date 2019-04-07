@@ -12,21 +12,33 @@ EU Cookie Law warning message
 
 ## Features
 
-
-- responsive
 - jQuery not required
 - multilanguage support
 - customizable style
+- responsive
 - Bootstrap detect
 - adjustable delay and expire days
+- callback
 
 ## Easy usage
 
 ### Example 1
 
+- without parameters
+- without html lang attribute (default "en")
+
 ```html
-<html lang="en" ... >
-...
+<html>
+<script id="cookieWarn" type="text/javascript" src="../cookie-warn.min.js"></script>
+```
+
+### Example 2
+
+- all parameters
+- texts and links by html lang attribute
+
+```html
+<html lang="en">
 <script
     id="cookieWarn"
     data-lang-en="{
@@ -38,24 +50,38 @@ EU Cookie Law warning message
           'reject_info': 'You can disable unwanted cookies by using this program',
           'reject_link': 'https://www.ghostery.com/'
        },
-    }"
+    }" (optional, setup texts and links)
+    data-callback="cookieWarnCallback" (optional, callback function name)
+    data-debug="true" (optional, show debug info in console)
     data-expire="365" (optional, default 365 day)
-    data-domain="*.domain.tld" (cookie domain, optional)
-    data-path="/" (cookie path, optional)
-    data-secure="true" (cookie secure, true / false, optional)
+    data-domain="*.domain.tld" (optional, cookie domain)
+    data-path="/" (optional, cookie path)
+    data-secure="true" (optional, cookie secure https)
     data-delay="750" (optional, default 500)
-    data-class="customCookieWarning" (optional)
+    data-class="customCookieWarningClass" (optional)
     data-style="#cookieWarnBox a { color: #ff0000; }" (optional)
     type="text/javascript"
     src="../cookie-warn.min.js">
 </script>
+<script>
+      var cookieWarnCallback = function(accepted) {
+            if (accepted) {
+                do something...
+            } else {
+                don't do something...
+            }
+      };  
+</script>
 ```
 
-### Example 2
+### Example 3
+
+- with default parameters
+- texts and links by html lang attribute
 
 ```html
- <html lang="en" ... >
- ...
+ <html lang="en">
+
  <script type="text/javascript" src="../cookie-warn.min.js"></script>
 
  <div
@@ -78,7 +104,6 @@ EU Cookie Law warning message
 
 ## TODO
 
-- store cookie when rejected
 - if accepted call a function (callMeWhenCookiesAccepted)
 - add more info to the demo page (show cookie value)
 - accept for 1 day, 1 week, 1 month, 1 year

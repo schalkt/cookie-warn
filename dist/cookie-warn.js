@@ -1,7 +1,7 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  * 
- * @version v3.0.10
+ * @version v3.1.1
  * @link http://schalk.hu/projects/cookie-warn/demo/index.html
  * @author Tamas Schalk (https://github.com/schalkt)
  * @license MIT
@@ -23,6 +23,8 @@
  *              'reject_link': 'https://www.ghostery.com/'
  *           },
  *        }"
+ *        data-callback="cookieWarnCallback"
+ *        data-debug="true" (optional, show debug info in console)
  *        data-expire="365" (optional, default 365 day)
  *        data-domain="*.domain.tld" (cookie domain, optional)
  *        data-path="/" (cookie path, optional)
@@ -62,6 +64,71 @@
 
     "use strict";
 
+    // element id for styles
+    var elementId = fn + 'Box';
+    var cookieName = 'cookieWarn.accepted';
+    
+    // get cookieWarn element
+    var el = document.getElementById(fn);
+
+    if (!el) {
+        console.warn(fn + ' element not found by id');
+        return;
+    }
+
+    // get cookie warn attributes
+    var getAttributes = function(){
+
+        var lang = document.documentElement.lang ? document.documentElement.lang : 'en';
+        var langData = el.getAttribute('data-lang-' + lang);
+        var data;
+
+        if (!langData) {
+            data = {
+                'text':'Our website uses cookies.',
+                'accept_text': 'I accept',
+                'more_text': 'Click here for more information',
+                'more_link': 'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm',
+                'reject_text': 'I reject',
+                'reject_info': 'You can disable unwanted cookies by using this program',
+                'reject_link': 'https://www.ghostery.com/'
+            };
+        } else {
+            data = JSON.parse(langData.replace(/'/g, '"'));
+        }
+
+        var attributes = {
+            delay : parseInt(el.getAttribute('data-delay')),
+            expire : parseInt(el.getAttribute('data-expire')),
+            domain : el.getAttribute('data-domain'),
+            path : el.getAttribute('data-path'),
+            secure : el.getAttribute('data-secure'),   
+            debug : el.getAttribute('data-debug'),            
+            style : el.getAttribute('data-style'),
+            class : el.getAttribute('data-class'),
+            callback : el.getAttribute('data-callback'),
+            data : data
+        };
+        
+        attributes.path = attributes.path ? attributes.path : '/';
+        attributes.delay = attributes.delay ? attributes.delay : 500;
+        attributes.expire = attributes.expire ? attributes.expire : 365;
+        attributes.secure = attributes.secure == "true" ? true : false;
+        attributes.debug = attributes.debug == "true" ? true : false;
+
+        if (attributes.debug) {
+            console.log(attributes);
+        }
+
+        return attributes;
+
+    };
+
+
+    // get cookieWarn html attributes
+    var attributes = getAttributes();    
+
+
     // set or get cookie
     var cookie = function (name, value, days, path, domain, secure) {
 
@@ -83,10 +150,11 @@
 
         } else {
 
-            days = days ? days : 365;
-            var expire = new Date();
-            expire.setDate(expire.getDate() + days);
             var values = [];
+            var expire = new Date();
+
+            days = days ? days : 365;            
+            expire.setDate(expire.getDate() + days);            
 
             if (days !== undefined && days !== null) {
                 values.push("expires=" + expire.toGMTString());
@@ -108,84 +176,93 @@
                 value = value + "; " + values.join("; ");
             }
 
+            if (attributes.debug) {
+                console.log(name, value);
+            }
+
             document.cookie = escape(name) + "=" + value;
 
         }
 
     };
 
-    // if cookie available then return
-    if (cookie(fn)) {
-        return;
-    }
-
     // warning box close function
     window[fn] = {
-
-        close: function (expire, path, domain, secure) {
+        
+        accept: function () {
 
             // set the cookie
-            cookie(fn, true, expire, path, domain, secure);
+            cookie(cookieName, true, attributes.expire, attributes.path, attributes.domain, attributes.secure);
 
             // remove warning box
-            var wbox = document.getElementById(fn + 'Box');
+            var wbox = document.getElementById(elementId);
             wbox.className = wbox.className + ' closed';
+
+            cookieWarnValue = true;
+            check(cookieWarnValue);
 
         },
 
         reject: function () {
 
+            // set the cookie
+            cookie(cookieName, false, attributes.expire, attributes.path, attributes.domain, attributes.secure);
+
             // show reject information
-            var wbox = document.getElementById(fn + 'Box');
+            var wbox = document.getElementById(elementId);
             wbox.className = wbox.className + ' reject';
 
+            cookieWarnValue = false;
+            check(cookieWarnValue);
+
+        },
+
+    };
+
+    var cookieWarnValue = cookie(cookieName);
+
+    // check
+    var check = function(cookieWarnValue){
+
+        var accepted = cookieWarnValue == 'true' || cookieWarnValue === true ? true : false;
+
+        if (attributes.debug) {
+            console.log('status: ' + (accepted ? 'accepted' : 'rejected'));
+        }
+    
+        if (attributes.callback && window[attributes.callback]) {                
+            if (attributes.debug) {
+                console.log('call: ' + attributes.callback);
+            }
+            window[attributes.callback](accepted);
         }
 
     };
 
-
     var warn = function () {
 
-        // get parameters
-        var tag = document.getElementById('cookieWarn');
-
-        if (!tag) {
-            console.error('cookieWarn element not found by id');
+        if (!attributes.data) {
+            console.error('Empty or invalid data-lang parameters');
             return;
         }
-
-        var lang = document.documentElement.lang;
-        var data = JSON.parse(tag.getAttribute('data-lang-' + lang).replace(/'/g, '"'));
-
-        if (!data) {
-            return;
-        }
-
-        var delay = parseInt(tag.getAttribute('data-delay'));
-        var domain = tag.getAttribute('data-domain');
-        var path = tag.getAttribute('data-path');
-        var secure = tag.getAttribute('data-secure');
-        var expire = parseInt(tag.getAttribute('data-expire'));
-        var style = tag.getAttribute('data-style');
-        var classes = tag.getAttribute('data-class');
-
+                    
         var bootstrap = (window.jQuery && typeof $().modal == 'function');
 
         var css = {
 
             style: [
-                '#' + fn + 'Box {transition:all 0.4s ease-in-out;position:fixed;z-index:999999;bottom:-20px;left:0;right:0;opacity:0;text-align:center;padding:10px;background-color:#212121}',
-                '#' + fn + 'Box .btn {white-space:nowrap}',
-                '#' + fn + 'Box .reject_more {padding:0px 10px;display:none;}',
-                '#' + fn + 'Box.reject .reject_more {display:block;}',
-                '#' + fn + 'Box.loaded {opacity:0.9;bottom:0px}',
-                '#' + fn + 'Box.closed {opacity:0;bottom:-20px}'
+                '#' + elementId + ' {transition:all 0.4s ease-in-out;position:fixed;z-index:999999;bottom:-20px;left:0;right:0;opacity:0;text-align:center;padding:10px;background-color:#212121}',
+                '#' + elementId + ' .btn {white-space:nowrap}',
+                '#' + elementId + ' .reject_more {padding:0px 10px;display:none;}',
+                '#' + elementId + '.reject .reject_more {display:block;}',
+                '#' + elementId + '.loaded {opacity:0.9;bottom:0px}',
+                '#' + elementId + '.closed {opacity:0;bottom:-20px}'
             ],
             style2: [
-                '#' + fn + 'Box {font-family: Verdana;line-height:24px;color:#f1f1f1;font-size:14px;}',
-                '#' + fn + 'Box .btn {text-transform:uppercase;cursor:pointer;background-color:#f1f1f1;color:#659fda;padding:3px 14px;margin-left:10px;}',
-                '#' + fn + 'Box .btn:hover {background-color:#ffffff;color:#4d78a5;}',
-                '#' + fn + 'Box a {text-decoration:none;color:#659fda}',
+                '#' + elementId + ' {font-family: Verdana;line-height:24px;color:#f1f1f1;font-size:14px;}',
+                '#' + elementId + ' .btn {text-transform:uppercase;cursor:pointer;background-color:#f1f1f1;color:#659fda;padding:3px 14px;margin-left:10px;}',
+                '#' + elementId + ' .btn:hover {background-color:#ffffff;color:#4d78a5;}',
+                '#' + elementId + ' a {text-decoration:none;color:#659fda}',
             ],
             type: 'text/css',
             element: document.createElement('style'),
@@ -193,6 +270,10 @@
 
                 if (!bootstrap) {
                     this.style = this.style.concat(this.style2);
+                }
+
+                if (attributes.style) {
+                    this.style = this.style.concat(attributes.style);
                 }
 
                 this.element.type = this.type;
@@ -206,31 +287,25 @@
 
         // create warning box
         var wbox = document.createElement('div');
-        wbox.setAttribute("id", fn + "Box");
+        wbox.setAttribute("id", elementId);
 
-        if (classes) {
-            wbox.setAttribute("class", classes);
+        if (attributes.class) {
+            wbox.setAttribute("class", attributes.class);
         }
 
-        var args = [
-            expire ? expire : 'null',
-            path ? "'" + path + "'" : '/',
-            domain ? "'" + domain + "'" : 'null',
-            secure == "true" ? 1 : 0,
-        ].join(',');
+        var info = (attributes.data.more_link && attributes.data.more_text) ? ' <a target="_blank" href="' + attributes.data.more_link + '">' + attributes.data.more_text + '</a> ' : '';
+        var accept_button = '<span class="btn btn-success" id="' + fn + 'Accept" onclick="' + fn + '.accept();">' + attributes.data.accept_text + '</span>';
+        var reject_button, reject_content;
 
-        var info = (data.more_link && data.more_text) ? ' <a target="_blank" href="' + data.more_link + '">' + data.more_text + '</a> ' : '';
-        var accept_button = '<span class="btn btn-default" id="' + fn + 'Close" onclick="' + fn + '.close(' + args + ');">' + data.accept_text + '</span>';
-
-        if (data.reject_text) {
-            var reject_button = '<span class="btn btn-warning" onclick="' + fn + '.reject();">' + data.reject_text + '</span>';
-            var reject_content = '<span class="reject_more">' + data.reject_info + ' <a target="_blank" href="' + data.reject_link + '">' + data.reject_link + '</a></span>';
+        if (attributes.data.reject_text) {
+            reject_button = '<span class="btn btn-warning" onclick="' + fn + '.reject();">' + attributes.data.reject_text + '</span>';
+            reject_content = '<span class="reject_more">' + attributes.data.reject_info + ' <a target="_blank" href="' + attributes.data.reject_link + '">' + attributes.data.reject_link + '</a></span>';
         } else {
-            var reject_button = '';
-            var reject_content = '';
+            reject_button = '';
+            reject_content = '';
         }
 
-        wbox.innerHTML = '<div class="text">' + data.text + info + accept_button + reject_button + reject_content + '</div>';
+        wbox.innerHTML = '<div class="text">' + attributes.data.text + info + accept_button + reject_button + reject_content + '</div>';
 
         // append to body
         var body = document.getElementsByTagName("body")[0];
@@ -238,19 +313,31 @@
 
         setTimeout(function () {
             wbox.className = wbox.className + ' loaded';
-        }, delay ? parseInt(delay) : 500);
+        }, attributes.delay);
 
-    }
+    };
 
 
     var isDOMready = function(){
 
-        if (document.readyState == 'complete') {        
-            warn();
+        var readyState = document.readyState;
+
+        if (attributes.debug) {
+            console.log('readyState: ' + readyState);
+        }
+
+        if (readyState == 'complete') {        
+            
+            if (!cookieWarnValue) {
+                warn();                
+            } else {
+                check(cookieWarnValue);
+            }
+
         } else {
             setTimeout(function () {
                 isDOMready();
-            }, 1000);
+            }, 200);
         }
 
     };
