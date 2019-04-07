@@ -66,11 +66,11 @@ EU Cookie Law warning message
 <script>
       var cookieWarnCallback = function(accepted) {
             if (accepted) {
-                do something...
+                  // do something...
             } else {
-                don't do something...
+                  // do nothing...
             }
-      };  
+      };
 </script>
 ```
 
@@ -104,6 +104,4 @@ EU Cookie Law warning message
 
 ## TODO
 
-- if accepted call a function (callMeWhenCookiesAccepted)
-- add more info to the demo page (show cookie value)
-- accept for 1 day, 1 week, 1 month, 1 year
+- add more info to the demo pages
