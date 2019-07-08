@@ -1,7 +1,7 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  * 
- * @version v3.1.1
+ * @version v3.1.2
  * @link http://schalk.hu/projects/cookie-warn/demo/index.html
  * @author Tamas Schalk (https://github.com/schalkt)
  * @license MIT
@@ -256,7 +256,7 @@
                 '#' + elementId + ' .reject_more {padding:0px 10px;display:none;}',
                 '#' + elementId + '.reject .reject_more {display:block;}',
                 '#' + elementId + '.loaded {opacity:0.9;bottom:0px}',
-                '#' + elementId + '.closed {opacity:0;bottom:-20px}'
+                '#' + elementId + '.closed {display:none;}'
             ],
             style2: [
                 '#' + elementId + ' {font-family: Verdana;line-height:24px;color:#f1f1f1;font-size:14px;}',
