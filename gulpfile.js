@@ -97,7 +97,7 @@ gulp.task('dev', gulp.series(
 	"version"
 ));
 
-gulp.task('default', gulp.series(
+gulp.task('prod', gulp.series(
 	function (cb) {
 		PROD = true;
 		cb();
