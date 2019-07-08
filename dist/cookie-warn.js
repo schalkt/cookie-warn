@@ -1,7 +1,7 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  * 
- * @version v3.1.3
+ * @version v3.1.4
  * @link http://schalk.hu/projects/cookie-warn/demo/index.html
  * @author Tamas Schalk (https://github.com/schalkt)
  * @license MIT
@@ -67,7 +67,7 @@
     // element id for styles
     var elementId = fn + 'Box';
     var cookieName = 'cookieWarn.accepted';
-    
+
     // get cookieWarn element
     var el = document.getElementById(fn);
 
@@ -77,7 +77,7 @@
     }
 
     // get cookie warn attributes
-    var getAttributes = function(){
+    var getAttributes = function () {
 
         var lang = document.documentElement.lang ? document.documentElement.lang : 'en';
         var langData = el.getAttribute('data-lang-' + lang);
@@ -85,7 +85,7 @@
 
         if (!langData) {
             data = {
-                'text':'Our website uses cookies.',
+                'text': 'Our website uses cookies.',
                 'accept_text': 'I accept',
                 'more_text': 'Click here for more information',
                 'more_link': 'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm',
@@ -98,18 +98,18 @@
         }
 
         var attributes = {
-            delay : parseInt(el.getAttribute('data-delay')),
-            expire : parseInt(el.getAttribute('data-expire')),
-            domain : el.getAttribute('data-domain'),
-            path : el.getAttribute('data-path'),
-            secure : el.getAttribute('data-secure'),   
-            debug : el.getAttribute('data-debug'),            
-            style : el.getAttribute('data-style'),
-            class : el.getAttribute('data-class'),
-            callback : el.getAttribute('data-callback'),
-            data : data
+            delay: parseInt(el.getAttribute('data-delay')),
+            expire: parseInt(el.getAttribute('data-expire')),
+            domain: el.getAttribute('data-domain'),
+            path: el.getAttribute('data-path'),
+            secure: el.getAttribute('data-secure'),
+            debug: el.getAttribute('data-debug'),
+            style: el.getAttribute('data-style'),
+            class: el.getAttribute('data-class'),
+            callback: el.getAttribute('data-callback'),
+            data: data
         };
-        
+
         attributes.path = attributes.path ? attributes.path : '/';
         attributes.delay = attributes.delay ? attributes.delay : 500;
         attributes.expire = attributes.expire ? attributes.expire : 365;
@@ -126,7 +126,7 @@
 
 
     // get cookieWarn html attributes
-    var attributes = getAttributes();    
+    var attributes = getAttributes();
 
 
     // set or get cookie
@@ -153,8 +153,8 @@
             var values = [];
             var expire = new Date();
 
-            days = days ? days : 365;            
-            expire.setDate(expire.getDate() + days);            
+            days = days ? days : 365;
+            expire.setDate(expire.getDate() + days);
 
             if (days !== undefined && days !== null) {
                 values.push("expires=" + expire.toGMTString());
@@ -188,7 +188,7 @@
 
     // warning box close function
     window[fn] = {
-        
+
         accept: function () {
 
             // set the cookie
@@ -222,15 +222,15 @@
     var cookieWarnValue = cookie(cookieName);
 
     // check
-    var check = function(cookieWarnValue){
+    var check = function (cookieWarnValue) {
 
         var accepted = cookieWarnValue == 'true' || cookieWarnValue === true ? true : false;
 
         if (attributes.debug) {
             console.log('status: ' + (accepted ? 'accepted' : 'rejected'));
         }
-    
-        if (attributes.callback && window[attributes.callback]) {                
+
+        if (attributes.callback && window[attributes.callback]) {
             if (attributes.debug) {
                 console.log('call: ' + attributes.callback);
             }
@@ -245,7 +245,7 @@
             console.error('Empty or invalid data-lang parameters');
             return;
         }
-                    
+
         var bootstrap = (window.jQuery && typeof $().modal == 'function');
 
         var css = {
@@ -318,7 +318,7 @@
     };
 
 
-    var isDOMready = function(){
+    var isDOMready = function () {
 
         var readyState = document.readyState;
 
@@ -326,10 +326,10 @@
             console.log('readyState: ' + readyState);
         }
 
-        if (readyState == 'complete') {        
-            
+        if (readyState == 'complete') {
+
             if (!cookieWarnValue) {
-                warn();                
+                warn();
             } else {
                 check(cookieWarnValue);
             }
