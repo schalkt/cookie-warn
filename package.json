@@ -1,6 +1,6 @@
 {
   "name": "cookie-warn",
-  "version": "3.1.4",
+  "version": "3.1.5",
   "description": "EU cookie warn",
   "homepage": "http://schalk.hu/projects/cookie-warn/demo/index.html",
   "repository": {
@@ -22,7 +22,7 @@
     "gulp-bump": "^3.1.3",
     "gulp-concat": "^2.6.1",
     "gulp-gzip": "^1.4.2",
-    "gulp-header": "^2.0.7",
+    "gulp-header": "^2.0.9",
     "gulp-if": "^2.0.2",
     "gulp-rename": "^1.4.0",
     "gulp-replace": "^1.0.0",
