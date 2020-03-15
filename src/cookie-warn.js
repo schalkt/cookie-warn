@@ -1,58 +1,4 @@
-/**
- * EXAMPLE 1:
- * 
- *    <html lang="en" ... >
- *    ...
- *    <script
- *        id="cookieWarn"
- *        data-lang-en="{
- *              'text': 'Our website uses cookies.',
- *              'more_text': 'Click here for more information',
- *              'more_link': 'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm',
- *              'accept_text': 'I accept',
- *              'reject_text': 'I reject',
- *              'reject_info': 'You can disable unwanted cookies by using this program',
- *              'reject_link': 'https://www.ghostery.com/'
- *           },
- *        }"
- *        data-callback="cookieWarnCallback"
- *        data-debug="true" (optional, show debug info in console)
- *        data-expire="365" (optional, default 365 day)
- *        data-domain="*.domain.tld" (cookie domain, optional)
- *        data-path="/" (cookie path, optional)
- *        data-secure="true" (cookie secure, true / false, optional)
- *        data-delay="750" (optional, default 500)
- *        data-class="customCookieWarning" (optional)
- *        data-style="#cookieWarnBox a { color: #ff0000; }" (optional)
- *        type="text/javascript"
- *        src="../cookie-warn.min.js">
- *    </script>
- *
- * EXAMPLE 2:
- *    
- *    <html lang="en" ... >
- *    ...
- *    <script type="text/javascript" src="../cookie-warn.min.js"></script>
- * 
- *    <div
- *        id="cookieWarn"
- *        data-lang-en="{
- *              'text':'Our website uses cookies.',
- *              'accept_text':'I accept',
- *              'more_text':'Click here for more information',
- *              'more_link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'
- *        }"
- *        data-lang-hu="{
- *              'text':'Weboldalunk sütiket használ.',
- *              'accept_text':'Elfogadom',
- *              'more_text':'Kattints ide a bővebb információért',
- *              'more_link':'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm'
- *        }">
- *    </div>
- *
- */
-
-(function (fn) {
+(function(fn) {
 
     "use strict";
 
@@ -69,7 +15,7 @@
     }
 
     // get cookie warn attributes
-    var getAttributes = function () {
+    var getAttributes = function() {
 
         var lang = document.documentElement.lang ? document.documentElement.lang : 'en';
         var langData = el.getAttribute('data-lang-' + lang);
@@ -122,7 +68,7 @@
 
 
     // set or get cookie
-    var cookie = function (name, value, days, path, domain, secure) {
+    var cookie = function(name, value, days, path, domain, secure) {
 
         if (value === undefined) {
 
@@ -148,19 +94,19 @@
             days = days ? days : 365;
             expire.setDate(expire.getDate() + days);
 
-            if (days !== undefined && days !== null) {
+            if (days != undefined && days != null) {
                 values.push("expires=" + expire.toGMTString());
             }
 
-            if (path !== undefined && path !== null) {
+            if (path != undefined && path != null) {
                 values.push("path=" + path);
             }
 
-            if (domain !== undefined && domain !== null) {
+            if (domain != undefined && domain != null) {
                 values.push("domain=" + domain);
             }
 
-            if (secure !== undefined && secure !== null && secure) {
+            if (secure != undefined && secure != null && secure) {
                 values.push("secure");
             }
 
@@ -181,7 +127,7 @@
     // warning box close function
     window[fn] = {
 
-        accept: function () {
+        accept: function() {
 
             // set the cookie
             cookie(cookieName, true, attributes.expire, attributes.path, attributes.domain, attributes.secure);
@@ -195,7 +141,7 @@
 
         },
 
-        reject: function () {
+        reject: function() {
 
             // set the cookie
             cookie(cookieName, false, attributes.expire, attributes.path, attributes.domain, attributes.secure);
@@ -214,7 +160,7 @@
     var cookieWarnValue = cookie(cookieName);
 
     // check
-    var check = function (cookieWarnValue) {
+    var check = function(cookieWarnValue) {
 
         var accepted = cookieWarnValue == 'true' || cookieWarnValue === true ? true : false;
 
@@ -231,7 +177,7 @@
 
     };
 
-    var warn = function () {
+    var warn = function() {
 
         if (!attributes.data) {
             console.error('Empty or invalid data-lang parameters');
@@ -258,7 +204,7 @@
             ],
             type: 'text/css',
             element: document.createElement('style'),
-            append: function () {
+            append: function() {
 
                 if (!bootstrap) {
                     this.style = this.style.concat(this.style2);
@@ -303,14 +249,14 @@
         var body = document.getElementsByTagName("body")[0];
         body.appendChild(wbox);
 
-        setTimeout(function () {
+        setTimeout(function() {
             wbox.className = wbox.className + ' loaded';
         }, attributes.delay);
 
     };
 
 
-    var isDOMready = function () {
+    var isDOMready = function() {
 
         var readyState = document.readyState;
 
@@ -327,7 +273,7 @@
             }
 
         } else {
-            setTimeout(function () {
+            setTimeout(function() {
                 isDOMready();
             }, 200);
         }
