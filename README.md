@@ -2,13 +2,20 @@
 
 EU Cookie Law warning message
 
-[![preview](https://img.shields.io/badge/preview-click_here-green.svg?style=flat-square)](http://schalk.hu/projects/cookie-warn/demo/)
 [![npm](https://img.shields.io/npm/dt/cookie-warn.svg?style=flat-square)](https://www.npmjs.com/package/cookie-warn)
 [![GitHub issues](https://img.shields.io/github/issues/schalkt/cookie-warn.svg?style=flat-square)](https://github.com/schalkt/cookie-warn/issues)
 [![schalkt](https://img.shields.io/david/schalkt/cookie-warn.svg?style=flat-square)](https://david-dm.org/schalkt/cookie-warn)
 [![Build Status](https://travis-ci.org/schalkt/cookie-warn.svg?branch=master)](https://travis-ci.org/schalkt/cookie-warn)
 [![npm](https://img.shields.io/npm/v/cookie-warn.svg?style=flat-square)](https://www.npmjs.com/package/cookie-warn)
-[![jsDelivr](https://data.jsdelivr.com/v1/package/npm/cookie-warn/badge)](https://www.jsdelivr.com/package/npm/cookie-warn)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=schalkt_cookie-warn&metric=alert_status)](https://sonarcloud.io/dashboard?id=schalkt_cookie-warn)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=schalkt_cookie-warn&metric=security_rating)](https://sonarcloud.io/dashboard?id=schalkt_cookie-warn)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=schalkt_cookie-warn&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=schalkt_cookie-warn)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=schalkt_cookie-warn&metric=bugs)](https://sonarcloud.io/dashboard?id=schalkt_cookie-warn)
+
+## Preview
+
+[![preview](https://img.shields.io/badge/preview-click_here-green.svg?style=flat-square)](http://schalk.hu/projects/cookie-warn/demo/)
 
 ## Features
 
