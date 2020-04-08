@@ -8,7 +8,7 @@ EU Cookie Law warning message
 [![Build Status](https://travis-ci.org/schalkt/cookie-warn.svg?branch=master)](https://travis-ci.org/schalkt/cookie-warn)
 [![npm](https://img.shields.io/npm/v/cookie-warn.svg?style=flat-square)](https://www.npmjs.com/package/cookie-warn)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=schalkt_cookie-warn&metric=alert_status)](https://sonarcloud.io/dashboard?id=schalkt_cookie-warn)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=schalkt_cookie-warn&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=schalkt_cookie-warn)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=schalkt_cookie-warn&metric=security_rating)](https://sonarcloud.io/dashboard?id=schalkt_cookie-warn)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=schalkt_cookie-warn&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=schalkt_cookie-warn)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=schalkt_cookie-warn&metric=bugs)](https://sonarcloud.io/dashboard?id=schalkt_cookie-warn)
