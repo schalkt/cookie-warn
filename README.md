@@ -108,7 +108,3 @@ EU Cookie Law warning message
  </div>
 
 ```
-
-## TODO
-
-- add more info to the demo pages
