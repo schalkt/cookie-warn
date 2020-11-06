@@ -1,12 +1,12 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  * 
- * @version v3.1.7
+ * @version v3.1.10
  * @link http://schalk.hu/projects/cookie-warn/demo/index.html
  * @author Tamas Schalk (https://github.com/schalkt)
  * @license MIT
  */
-(function(fn) {
+(function (fn) {
 
     "use strict";
 
@@ -23,7 +23,7 @@
     }
 
     // get cookie warn attributes
-    var getAttributes = function() {
+    var getAttributes = function () {
 
         var lang = document.documentElement.lang ? document.documentElement.lang : 'en';
         var langData = el.getAttribute('data-lang-' + lang);
@@ -36,8 +36,9 @@
                 'more_text': 'Click here for more information',
                 'more_link': 'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm',
                 'reject_text': 'I reject',
-                'reject_info': 'You can disable unwanted cookies by using this program',
-                'reject_link': 'https://www.ghostery.com/'
+                'reject_info': null,
+                'reject_link': null,
+                'close_text': 'Close'
             };
         } else {
             data = JSON.parse(langData.replace(/'/g, '"'));
@@ -76,7 +77,7 @@
 
 
     // set or get cookie
-    var cookie = function(name, value, days, path, domain, secure) {
+    var cookie = function (name, value, days, path, domain, secure) {
 
         if (value === undefined) {
 
@@ -135,7 +136,7 @@
     // warning box close function
     window[fn] = {
 
-        accept: function() {
+        accept: function () {
 
             // set the cookie
             cookie(cookieName, true, attributes.expire, attributes.path, attributes.domain, attributes.secure);
@@ -149,18 +150,30 @@
 
         },
 
-        reject: function() {
+        reject: function () {
 
             // set the cookie
             cookie(cookieName, false, attributes.expire, attributes.path, attributes.domain, attributes.secure);
 
-            // show reject information
             var wbox = document.getElementById(elementId);
-            wbox.className = wbox.className + ' reject';
+
+            // show reject information
+            if (attributes.data.reject_info) {
+                wbox.className = wbox.className + ' reject';
+            } else {
+                wbox.className = wbox.className + ' closed';
+            }
 
             cookieWarnValue = false;
             check(cookieWarnValue);
 
+        },
+
+        close: function () {
+
+            var wbox = document.getElementById(elementId);
+            wbox.className = wbox.className + ' closed';
+            
         },
 
     };
@@ -168,12 +181,16 @@
     var cookieWarnValue = cookie(cookieName);
 
     // check
-    var check = function(cookieWarnValue) {
+    var check = function (cookieWarnValue) {
 
         var accepted = cookieWarnValue == 'true' || cookieWarnValue === true ? true : false;
 
         if (attributes.debug) {
             console.log('status: ' + (accepted ? 'accepted' : 'rejected'));
+        }
+
+        if (!attributes.callback) {
+            attributes.callback = 'cookieWarnCallback';
         }
 
         if (attributes.callback && window[attributes.callback]) {
@@ -185,7 +202,7 @@
 
     };
 
-    var warn = function() {
+    var warn = function () {
 
         if (!attributes.data) {
             console.error('Empty or invalid data-lang parameters');
@@ -212,7 +229,7 @@
             ],
             type: 'text/css',
             element: document.createElement('style'),
-            append: function() {
+            append: function () {
 
                 if (!bootstrap) {
                     this.style = this.style.concat(this.style2);
@@ -240,15 +257,21 @@
         }
 
         var info = (attributes.data.more_link && attributes.data.more_text) ? ' <a target="_blank" href="' + attributes.data.more_link + '">' + attributes.data.more_text + '</a> ' : '';
-        var accept_button = '<span class="btn btn-success" id="' + fn + 'Accept" onclick="' + fn + '.accept();">' + attributes.data.accept_text + '</span>';
-        var reject_button, reject_content;
+        var accept_button = '<span class="btn btn-success" id="' + fn + 'Accept" onclick="' + fn + '.accept();">' + attributes.data.accept_text + '</span> ';
+        var reject_button = '';
+        var reject_content = '';
 
         if (attributes.data.reject_text) {
-            reject_button = '<span class="btn btn-warning" onclick="' + fn + '.reject();">' + attributes.data.reject_text + '</span>';
-            reject_content = '<span class="reject_more">' + attributes.data.reject_info + ' <a target="_blank" href="' + attributes.data.reject_link + '">' + attributes.data.reject_link + '</a></span>';
-        } else {
-            reject_button = '';
-            reject_content = '';
+
+            reject_button = '<span class="btn btn-warning" onclick="' + fn + '.reject();">' + attributes.data.reject_text + '</span> ';
+
+            if (attributes.data.reject_info || attributes.data.reject_link) {
+                reject_content = ' <span class="reject_more">';
+                reject_content += attributes.data.reject_info + ' <a target="_blank" href="' + attributes.data.reject_link + '">' + attributes.data.reject_link + '</a> ';
+                reject_content += ' <span class="btn btn-secondary" id="' + fn + 'Close" onclick="' + fn + '.close();">' + attributes.data.close_text + '</span> ';
+                reject_content += ' </span> ';
+            }
+
         }
 
         wbox.innerHTML = '<div class="text">' + attributes.data.text + info + accept_button + reject_button + reject_content + '</div>';
@@ -257,14 +280,14 @@
         var body = document.getElementsByTagName("body")[0];
         body.appendChild(wbox);
 
-        setTimeout(function() {
+        setTimeout(function () {
             wbox.className = wbox.className + ' loaded';
         }, attributes.delay);
 
     };
 
 
-    var isDOMready = function() {
+    var isDOMready = function () {
 
         var readyState = document.readyState;
 
@@ -281,7 +304,7 @@
             }
 
         } else {
-            setTimeout(function() {
+            setTimeout(function () {
                 isDOMready();
             }, 200);
         }
