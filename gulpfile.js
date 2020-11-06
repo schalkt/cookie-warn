@@ -88,7 +88,7 @@ gulp.task('version', function () {
 
 });
 
-gulp.task('dev', gulp.series(
+gulp.task('default', gulp.series(
 	function (cb) {
 		PROD = false;
 		cb();
