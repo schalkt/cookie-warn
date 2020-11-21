@@ -32,10 +32,9 @@ EU Cookie Law warning message
 ### Example 1
 
 - without parameters
-- without html lang attribute (default "en")
 
 ```html
-<html>
+<html lang="en">
 <script id="cookieWarn" type="text/javascript" src="../cookie-warn.min.js"></script>
 ```
 
@@ -56,15 +55,16 @@ EU Cookie Law warning message
           'reject_text': 'I reject',
           'reject_info': 'You can disable unwanted cookies by using this program',
           'reject_link': 'https://www.ghostery.com/'
+          'close_text': 'Close'
        },
     }" (optional, setup texts and links)
-    data-callback="cookieWarnCallback" (optional, callback function name)
-    data-debug="true" (optional, show debug info in console)
-    data-expire="365" (optional, default 365 day)
-    data-domain="*.domain.tld" (optional, cookie domain)
-    data-path="/" (optional, cookie path)
-    data-secure="true" (optional, cookie secure https)
-    data-delay="750" (optional, default 500)
+    data-callback="cookieWarnCallback" (callback function name, optional)
+    data-debug="true" (show debug info in console, optional)
+    data-expire="365" (default 365 day, optional)
+    data-domain="*.domain.tld" (cookie domain, optional)
+    data-path="/" (cookie path, optional)
+    data-secure="true" (cookie secure https, optional)
+    data-delay="750" (default 500, optional)
     data-class="customCookieWarningClass" (optional)
     data-style="#cookieWarnBox a { color: #ff0000; }" (optional)
     type="text/javascript"
