@@ -26,7 +26,7 @@
                 'text': 'Our website uses cookies.',
                 'accept_text': 'I accept',
                 'more_text': 'Click here for more information',
-                'more_link': 'http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm',
+                'more_link': 'https://ec.europa.eu/info/law/law-topic/data-protection_en',
                 'reject_text': 'I reject',
                 'reject_info': null,
                 'reject_link': null,
