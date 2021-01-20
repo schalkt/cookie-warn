@@ -1,8 +1,8 @@
 {
     "name": "cookie-warn",
-    "version": "3.1.14",
+    "version": "3.1.15",
     "description": "EU cookie warn",
-    "homepage": "http://schalk.hu/projects/cookie-warn/demo/index.html",
+    "homepage": "https://schalk.hu/projects/cookie-warn/demo/index.html",
     "repository": {
         "type": "git",
         "url": "https://github.com/schalkt/cookie-warn.git"

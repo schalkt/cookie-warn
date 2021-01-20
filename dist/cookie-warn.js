@@ -1,8 +1,8 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  * 
- * @version v3.1.14
- * @link http://schalk.hu/projects/cookie-warn/demo/index.html
+ * @version v3.1.15
+ * @link https://schalk.hu/projects/cookie-warn/demo/index.html
  * @author Tamas Schalk (https://github.com/schalkt)
  * @license MIT
  */
