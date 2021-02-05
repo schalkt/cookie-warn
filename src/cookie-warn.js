@@ -155,8 +155,9 @@
     var cookieWarnValue = cookie(cookieName);
 
     // check
-    var check = function (warn) {
-        var accepted = warn == "true" || warn === true ? true : false;
+    var check = function (warnValue) {
+        
+        var accepted = warnValue == "true" || warnValue === true ? true : false;
 
         if (attributes.debug) {
             console.log("status: " + (accepted ? "accepted" : "rejected"));
