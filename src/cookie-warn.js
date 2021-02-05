@@ -17,7 +17,7 @@
     var getAttributes = function () {
         var lang = document.documentElement.lang ? document.documentElement.lang : "en";
         var langData = el.getAttribute("data-lang-" + lang);
-        var data;
+        var data, parameters;
 
         if (!langData) {
             data = {
@@ -34,7 +34,7 @@
             data = JSON.parse(langData.replace(/'/g, '"'));
         }
 
-        var attributes = {
+        parameters = {
             delay: parseInt(el.getAttribute("data-delay")),
             expire: parseInt(el.getAttribute("data-expire")),
             domain: el.getAttribute("data-domain"),
@@ -47,17 +47,17 @@
             data: data,
         };
 
-        attributes.path = attributes.path ? attributes.path : "/";
-        attributes.delay = attributes.delay ? attributes.delay : 500;
-        attributes.expire = attributes.expire ? attributes.expire : 365;
-        attributes.secure = attributes.secure == "true" ? true : false;
-        attributes.debug = attributes.debug == "true" ? true : false;
+        parameters.path = parameters.path ? parameters.path : "/";
+        parameters.delay = parameters.delay ? parameters.delay : 500;
+        parameters.expire = parameters.expire ? parameters.expire : 365;
+        parameters.secure = parameters.secure == "true" ? true : false;
+        parameters.debug = parameters.debug == "true" ? true : false;
 
-        if (attributes.debug) {
-            console.log(attributes);
+        if (parameters.debug) {
+            console.log(parameters);
         }
 
-        return attributes;
+        return parameters;
     };
 
     // get cookieWarn html attributes
@@ -155,8 +155,8 @@
     var cookieWarnValue = cookie(cookieName);
 
     // check
-    var check = function (cookieWarnValue) {
-        var accepted = cookieWarnValue == "true" || cookieWarnValue === true ? true : false;
+    var check = function (warn) {
+        var accepted = warn == "true" || warn === true ? true : false;
 
         if (attributes.debug) {
             console.log("status: " + (accepted ? "accepted" : "rejected"));
