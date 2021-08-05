@@ -2,7 +2,6 @@
 
 var gulp = require('gulp'),
 	rename = require('gulp-rename'),
-	bump = require('gulp-bump'),
 	gulpif = require("gulp-if"),
 	concat = require('gulp-concat'),
 	uglify = require('gulp-uglify'),
@@ -67,15 +66,6 @@ gulp.task("watch", function () {
 });
 
 
-gulp.task('bump', function () {
-
-	return gulp.src(['./package.json'])
-		.pipe(bump({ type: 'patch', indent: 4 }))
-		.pipe(gulp.dest('./'));
-
-});
-
-
 gulp.task('version', function () {
 
 	var packageJson = require('./package.json');
@@ -101,8 +91,7 @@ gulp.task('prod', gulp.series(
 	function (cb) {
 		PROD = true;
 		cb();
-	},
-	"bump",
+	},	
 	"js",
 	"js-min",
 	"version"
