@@ -1,7 +1,7 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  * 
- * @version v3.1.20
+ * @version v3.1.21
  * @link https://schalk.hu/projects/cookie-warn/demo/index.html
  * @author Tamas Schalk (https://github.com/schalkt)
  * @license MIT
@@ -73,6 +73,7 @@
 
     // set or get cookie
     var cookie = function (name, value, days, path, domain, secure) {
+
         if (value === undefined) {
             var i,
                 x,
@@ -80,9 +81,8 @@
                 cookies = document.cookie.split(";");
 
             for (i = 0; i < cookies.length; i++) {
-                x = cookies[i].substr(0, cookies[i].indexOf("="));
-                y = cookies[i].substr(cookies[i].indexOf("=") + 1);
-                x = x.replace(/^\s+|\s+$/g, "");
+                x = cookies[i].substr(0, cookies[i].indexOf("=")).trim();
+                y = cookies[i].substr(cookies[i].indexOf("=") + 1).trim();
 
                 if (x == name) {
                     return y;
@@ -164,7 +164,7 @@
 
     // check
     var check = function (warnValue) {
-        
+
         var accepted = warnValue == "true" || warnValue === true ? true : false;
 
         if (attributes.debug) {
