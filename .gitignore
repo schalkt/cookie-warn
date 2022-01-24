@@ -2,5 +2,4 @@
 /.vscode
 /.history
 /node_modules
-/compiler.jar
 *.log

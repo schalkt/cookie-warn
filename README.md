@@ -27,7 +27,7 @@ EU Cookie Law warning message
 - adjustable delay and expire days
 - callback
 
-## Easy usage
+## Examples
 
 ### Example 1
 
@@ -95,7 +95,8 @@ EU Cookie Law warning message
      id="cookieWarn"
      data-lang-en="{
            'text':'Our website uses cookies.',
-           'accept_text':'I accept',
+           'accept_text':'Accept all',
+           'accept_essential_text':'Accept only essential',
            'more_text':'Click here for more information',
            'more_link':'https://ec.europa.eu/info/law/law-topic/data-protection_en'
      }"

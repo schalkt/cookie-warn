@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "12"
+  - "16"
 cache: npm
 branches:
   only:
@@ -8,6 +8,6 @@ branches:
 before_script: 
   - npm install
   - npm audit
-script: gulp prod
+script: npm run prod
 after_success:
   - git reset -hard
