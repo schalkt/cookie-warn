@@ -30,7 +30,7 @@
     },
     "devDependencies": {
         "i": "^0.3.7",
-        "laravel-mix": "^6.0.39",
+        "laravel-mix": "^6.0.42",
         "lodash": "^4.17.21",
         "resolve-url-loader": "^5.0.0"
     }
