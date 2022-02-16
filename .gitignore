@@ -2,4 +2,5 @@
 /.vscode
 /.history
 /node_modules
+*manifest.json
 *.log
