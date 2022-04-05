@@ -190,7 +190,7 @@
             return;
         }
 
-        var bootstrap = window.jQuery && typeof $().modal == "function";
+        var bootstrap = window.jQuery && typeof $ == "function" && typeof $().modal == "function";
 
         var css = {
             style: [
