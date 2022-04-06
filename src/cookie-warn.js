@@ -1,7 +1,7 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  * 
- * @version v3.2.1
+ * @version v3.2.2
  * @link https://schalk.hu/projects/cookie-warn/demo/index.html
  * @author Tamas Schalk (https://github.com/schalkt)
  * @license MIT
@@ -56,10 +56,15 @@
             data: data,
         };
 
+        if (parameters.secure) {            
+            parameters.secure = parameters.secure == "true" ? true : false;        
+        } else {
+            parameters.secure =  location.protocol !== 'https:' ? false : true;
+        }
+
         parameters.path = parameters.path ? parameters.path : "/";
         parameters.delay = parameters.delay ? parameters.delay : 500;
         parameters.expire = parameters.expire ? parameters.expire : 365;
-        parameters.secure = (parameters.secure == "true") ? true : (location.protocol !== 'https:' ? false : true);
         parameters.debug = parameters.debug == "true" ? true : false;
 
         if (parameters.debug) {
@@ -77,16 +82,19 @@
 
         if (value === undefined) {
             var i,
-                x,
-                y,
+                ckey,
+                cval,
+                cidx,
                 cookies = document.cookie.split(";");
 
             for (i = 0; i < cookies.length; i++) {
-                x = cookies[i].substr(0, cookies[i].indexOf("=")).trim();
-                y = cookies[i].substr(cookies[i].indexOf("=") + 1).trim();
+                                
+                cidx = cookies[i].indexOf("=");
+                ckey = cookies[i].substring(0, cidx).trim();
+                cval = cookies[i].substring(cidx + 1).trim();
 
-                if (x == name) {
-                    return y;
+                if (ckey == name) {
+                    return cval;
                 }
             }
         } else {
@@ -120,7 +128,7 @@
                 console.log(name, value);
             }
 
-            document.cookie = escape(name) + "=" + value;
+            document.cookie = name + "=" + value;
         }
     };
 
