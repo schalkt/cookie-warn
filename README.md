@@ -34,7 +34,7 @@ EU Cookie Law warning message
 
 ```html
 <html lang="en">
-<script id="cookieWarn" type="text/javascript" src="../cookie-warn.min.js"></script>
+<script id="cookieScript" type="text/javascript" src="../cookie-warn.min.js"></script>
 ```
 
 ### Example 2
@@ -45,7 +45,7 @@ EU Cookie Law warning message
 ```html
 <html lang="en">
 <script
-    id="cookieWarn"
+    id="cookieScript"
     data-lang-en="{
           'text': 'Our website uses cookies.',
           'more_text': 'Click here for more information',
@@ -65,7 +65,7 @@ EU Cookie Law warning message
     data-secure="true" (cookie secure https, optional)
     data-delay="750" (default 500, optional)
     data-class="customCookieWarningClass" (optional)
-    data-style="#cookieWarnBox a { color: #ff0000; }" (optional)
+    data-style="#cookieScriptBox a { color: #ff0000; }" (optional)
     type="text/javascript"
     src="../cookie-warn.min.js">
 </script>
@@ -91,7 +91,7 @@ EU Cookie Law warning message
  <script type="text/javascript" src="../cookie-warn.min.js"></script>
 
  <div
-     id="cookieWarn"
+     id="cookieScript"
      data-lang-en="{
            'text':'Our website uses cookies.',
            'accept_text':'Accept all',
