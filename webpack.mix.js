@@ -2,6 +2,8 @@ const fs = require('fs');
 const mix = require('laravel-mix');
 const package = JSON.parse(fs.readFileSync('./package.json'));
 
+mix.disableNotifications();
+
 mix.extend('replace', function (webpackConfig, ...args) {
 
 	args[0].forEach(function (item) {
