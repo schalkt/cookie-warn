@@ -2,13 +2,23 @@
 <html lang="en">
 
 <head>
+
+   	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-0BS8BZYZZX"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-0BS8BZYZZX');
+	</script>
+
     <title>EU Cookie Law warning message demo page</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <link rel="stylesheet" href="./index.css">
     <script src="./index.js"></script>
 
-    <script id="cookieScript" type="text/javascript" src="./../dist/cookie-warn.js" 
+    <script id="cookieScript" type="text/javascript" src="./../dist/cookie-warn.js"
         data-lang-en="{
              'text':'Our website uses cookies.',
              'accept_text': 'I accept',
@@ -18,10 +28,10 @@
              'reject_info': 'You can disable unwanted cookies by using this program',
              'reject_link': 'https://www.ghostery.com/',
              'close_text': 'Close'
-            }" 
-        data-debug="true" 
-        data-expire="90" 
-        data-path="/projects/cookie-warn/demo" 
+            }"
+        data-debug="true"
+        data-expire="90"
+        data-path="/projects/cookie-warn/demo"
         data-delay="220"
         data-class="myCookieWarningClass"
         data-style="#cookieScriptBox a { color: lightblue } #cookieScriptBox .btn { border-radius: 5px }"
@@ -46,7 +56,7 @@
             <li><a href="./index-bootstrap.html">Bootstrap example</a></li>
         </ul>
         <div id="output"></div>
-    </div>   
+    </div>
 
 </body>
 
