@@ -1,8 +1,8 @@
 /**
  * @preserve cookie-warn - EU cookie warn
- * 
+ *
  * @version v3.2.10
- * @link https://schalk.hu/projects/cookie-warn/demo/index.html
+ * @link https://projects.schalk.hu/cookie-warn/demo/index.html
  * @author Tamas Schalk (https://github.com/schalkt)
  * @license MIT
  */
@@ -56,8 +56,8 @@
             data: data,
         };
 
-        if (parameters.secure) {            
-            parameters.secure = parameters.secure == "true" ? true : false;        
+        if (parameters.secure) {
+            parameters.secure = parameters.secure == "true" ? true : false;
         } else {
             parameters.secure =  location.protocol !== 'https:' ? false : true;
         }
@@ -88,7 +88,7 @@
                 cookies = document.cookie.split(";");
 
             for (i = 0; i < cookies.length; i++) {
-                                
+
                 cidx = cookies[i].indexOf("=");
                 ckey = cookies[i].substring(0, cidx).trim();
                 cval = cookies[i].substring(cidx + 1).trim();
@@ -265,7 +265,7 @@
         }
 
         // append to body
-        document.body.appendChild(wbox);        
+        document.body.appendChild(wbox);
 
         setTimeout(function () {
             wbox.className = wbox.className + " loaded";
@@ -278,7 +278,7 @@
 
         if (attributes.debug) {
             console.log("readyState: " + readyState);
-            console.log("cookieWarnValue: " + cookieWarnValue);            
+            console.log("cookieWarnValue: " + cookieWarnValue);
         }
 
         if (readyState == "complete") {
