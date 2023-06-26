@@ -14,7 +14,7 @@ EU Cookie Law warning message
 
 ## Preview
 
-[![preview](https://img.shields.io/badge/preview-click_here-green.svg?style=flat-square)](https://schalk.hu/projects/cookie-warn/demo/)
+[![preview](https://img.shields.io/badge/preview-click_here-green.svg?style=flat-square)](https://projects.schalk.hu/cookie-warn/demo/)
 
 ## Features
 
