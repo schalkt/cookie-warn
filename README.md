@@ -70,7 +70,7 @@ EU Cookie Law warning message
     src="../cookie-warn.min.js">
 </script>
 <script>
-      var cookieWarnCallback = function(accepted) {
+      const cookieWarnCallback = function(accepted) {
             if (accepted) {
                   // do something...
             } else {
