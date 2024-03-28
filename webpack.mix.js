@@ -1,6 +1,6 @@
 const fs = require('fs');
 const mix = require('laravel-mix');
-const package = JSON.parse(fs.readFileSync('./package.json'));
+const packagejson = JSON.parse(fs.readFileSync('./package.json'));
 
 mix.disableNotifications();
 
@@ -14,7 +14,7 @@ mix.extend('replace', function (webpackConfig, ...args) {
 });
 
 // update version in composer.json and app config
-mix.replace([['src/cookie-warn.js', /version\sv\d+\.\d+\.\d+/, 'version v' + package.version]]);
+mix.replace([['src/cookie-warn.js', /version\sv\d+\.\d+\.\d+/, 'version v' + packagejson.version]]);
 
 // build dist js
 mix.js('src/cookie-warn.js', 'dist');
