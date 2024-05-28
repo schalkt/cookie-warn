@@ -4,7 +4,6 @@ EU Cookie Law warning message
 
 [![npm](https://img.shields.io/npm/dt/cookie-warn.svg?style=flat-square)](https://www.npmjs.com/package/cookie-warn)
 [![GitHub issues](https://img.shields.io/github/issues/schalkt/cookie-warn.svg?style=flat-square)](https://github.com/schalkt/cookie-warn/issues)
-[![Build Status](https://travis-ci.com/schalkt/cookie-warn.svg?branch=master)](https://travis-ci.com/schalkt/cookie-warn)
 [![npm](https://img.shields.io/npm/v/cookie-warn.svg?style=flat-square)](https://www.npmjs.com/package/cookie-warn)
 
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=schalkt_cookie-warn&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=schalkt_cookie-warn)
