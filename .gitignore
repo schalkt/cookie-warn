@@ -1,6 +1,7 @@
 /.idea
 /.vscode
 /.history
+/.claude
 /node_modules
 *manifest.json
 *.log

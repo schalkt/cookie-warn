@@ -1,11 +1,16 @@
 
-// callback 
+const cookieWarnCallback = function (accepted, categories) {
 
-const cookieWarnCallback = function (accepted) {
+    let message = 'Callback fired &mdash; accepted: <strong>' + (accepted ? 'TRUE' : 'FALSE') + '</strong>';
 
-    let message = 'I am a callback, cookies accepted: ' + (accepted ? 'TRUE' : 'FALSE');
+    if (categories) {
+        const cats = Object.entries(categories)
+            .map(([k, v]) => k + ': ' + (v ? '✓' : '✗'))
+            .join(' &nbsp;|&nbsp; ');
+        message += '<br>Categories: ' + cats;
+    }
 
     document.getElementById('output').innerHTML = message;
-    console.log(message);
+    console.log('cookieWarnCallback', accepted, categories);
 
 };

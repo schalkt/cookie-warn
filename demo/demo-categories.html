@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html id="htmlRoot" lang="en">
+
+<head>
+    <title>cookie-warn – granular category consent</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Set html[lang] from ?lang= URL param BEFORE any other script loads -->
+    <script>
+        (function () {
+            var lang = new URLSearchParams(location.search).get('lang');
+            if (lang) { document.documentElement.lang = lang; }
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./demo.css">
+    <script src="./demo.js"></script>
+    <script id="cookieScript" src="./../dist/cookie-warn.js"
+        data-lang-en="{
+            'text': 'We use cookies to improve your experience.',
+            'more_text': 'Privacy policy',
+            'more_link': 'https://ec.europa.eu/info/law/law-topic/data-protection_en',
+            'accept_text': 'Accept all',
+            'accept_selected_text': 'Save settings',
+            'reject_text': 'Necessary only',
+            'categories': {
+                'necessary':  {'label': 'Necessary',  'description': 'Required for the site to function.',          'required': true},
+                'analytics':  {'label': 'Analytics',  'description': 'Help us understand how visitors use the site.'},
+                'marketing':  {'label': 'Marketing',  'description': 'Used for personalised ads and content.'}
+            }
+        }"
+        data-lang-hu="{
+            'text': 'Weboldalunk sütiket használ a jobb felhasználói élményért.',
+            'more_text': 'Adatkezelési tájékoztató',
+            'more_link': 'https://ec.europa.eu/info/law/law-topic/data-protection_hu',
+            'accept_text': 'Mindent elfogad',
+            'accept_selected_text': 'Mentés',
+            'reject_text': 'Csak szükséges',
+            'categories': {
+                'necessary':  {'label': 'Szükséges',  'description': 'Az oldal működéséhez elengedhetetlen.',     'required': true},
+                'analytics':  {'label': 'Analitikai', 'description': 'Segít az oldal fejlesztésében.'},
+                'marketing':  {'label': 'Marketing',  'description': 'Célzott hirdetések és tartalom.'}
+            }
+        }"
+        data-debug="true"
+        data-callback="cookieWarnCallback">
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="site-header">
+            <div class="site-header-inner">
+                <h1><span class="brand">cookie-warn</span><span class="sep">/</span>Categories</h1>
+                <span class="tag">GDPR recommended</span>
+            </div>
+        </div>
+
+        <ul>
+            <li>Per-category checkboxes: <code>necessary</code> / <code>analytics</code> / <code>marketing</code></li>
+            <li><strong>Necessary</strong> is always checked and cannot be unchecked (<code>required: true</code>)</li>
+            <li>Three buttons: <em>Accept all</em>, <em>Save settings</em>, <em>Necessary only</em></li>
+            <li>Callback receives <code>accepted</code> boolean + <code>categories</code> object — check the console</li>
+            <li>Language is set via <code>?lang=</code> URL param before the script loads — try the buttons below</li>
+        </ul>
+
+        <h2>Language</h2>
+        <a class="action-link" href="?lang=en">EN</a>
+        <a class="action-link" href="?lang=hu" style="margin-left:8px;">HU</a>
+
+        <h2>Actions</h2>
+        <a class="action-link" href="#" onclick="cookieScript.reopen(); return false;">↺ Reset consent</a>
+
+        <h2>Navigation</h2>
+        <ul class="demo-list">
+            <li><a href="./index.html">← All demos</a> <span class="desc"></span></li>
+            <li><a href="./demo.html">Basic example</a> <span class="desc"></span></li>
+            <li><a href="./demo-params.html">All parameters + reject info</a> <span class="desc"></span></li>
+            <li><a href="./demo-light.html">Light theme</a> <span class="desc"></span></li>
+            <li><a href="./demo-minimal.html">Minimal theme</a> <span class="desc"></span></li>
+        </ul>
+
+        <div id="output"></div>
+    </div>
+</body>
+
+</html>
