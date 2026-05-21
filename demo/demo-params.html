@@ -60,6 +60,40 @@
             <li><a href="./demo-bootstrap.html">Bootstrap example</a> <span class="desc"></span></li>
         </ul>
 
+        <h2>Code</h2>
+        <div class="code-block">
+            <div class="code-header">
+                <span class="code-label">HTML</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>&lt;script
+  id="cookieScript"
+  data-lang-en="{
+    'text': 'Our website uses cookies.',
+    'accept_text': 'I accept',
+    'more_text': 'Click here for more information',
+    'more_link': 'https://ec.europa.eu/info/law/law-topic/data-protection_en',
+    'reject_text': 'I reject',
+    'reject_info': 'You can disable unwanted cookies by using this program',
+    'reject_link': 'https://www.ghostery.com/',
+    'close_text': 'Close'
+  }"
+  data-expire="90"
+  data-path="/cookie-warn/demo"
+  data-delay="220"
+  data-class="myCookieWarningClass"
+  data-style="#cookieScriptBox a { color: lightblue } #cookieScriptBox .btn-cw-action { border-radius: 6px }"
+  data-callback="cookieWarnCallback"
+  src="cookie-warn.min.js"&gt;
+&lt;/script&gt;
+
+&lt;script&gt;
+  function cookieWarnCallback(accepted) {
+    if (accepted) { /* load analytics, ads, etc. */ }
+  }
+&lt;/script&gt;</code></pre>
+        </div>
+
         <div id="output"></div>
     </div>
 </body>

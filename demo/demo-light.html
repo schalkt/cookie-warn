@@ -89,6 +89,33 @@
             <li><a href="./demo-bootstrap.html">Bootstrap example</a> <span class="desc"></span></li>
         </ul>
 
+        <h2>Code</h2>
+        <div class="code-block">
+            <div class="code-header">
+                <span class="code-label">HTML</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>&lt;script
+  id="cookieScript"
+  data-theme="light"
+  data-lang-en="{
+    'text': 'We use cookies to improve your experience.',
+    'more_text': 'Privacy policy',
+    'more_link': 'https://example.com/privacy',
+    'accept_text': 'Accept all',
+    'accept_selected_text': 'Save settings',
+    'reject_text': 'Necessary only',
+    'categories': {
+      'necessary':  {'label': 'Necessary',  'description': 'Required for the site to function.', 'required': true},
+      'analytics':  {'label': 'Analytics',  'description': 'Help us understand how visitors use the site.'},
+      'marketing':  {'label': 'Marketing',  'description': 'Used for personalised ads and content.'}
+    }
+  }"
+  data-callback="cookieWarnCallback"
+  src="cookie-warn.min.js"&gt;
+&lt;/script&gt;</code></pre>
+        </div>
+
         <div id="output"></div>
     </div>
 </body>
