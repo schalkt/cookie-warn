@@ -13,6 +13,8 @@
     var elementId = fn + "Box";
     var cookieName = "cookieWarn.accepted";
     var categoriesCookieName = "cookieWarn.categories";
+    var versionCookieName = "cookieWarn.version";
+    var timestampCookieName = "cookieWarn.timestamp";
 
     var el = document.getElementById(fn);
 
@@ -52,6 +54,9 @@
             class: el.getAttribute("data-class"),
             callback: el.getAttribute("data-callback"),
             theme: el.getAttribute("data-theme") || "dark",
+            version: el.getAttribute("data-version") || null,
+            position: el.getAttribute("data-position") || "bottom",
+            once: el.getAttribute("data-once") === "true",
             data: data,
         };
 
@@ -178,9 +183,21 @@
 
     // --- internal helpers ---
 
+    var saveVersion = function () {
+        if (attributes.version) {
+            cookie(versionCookieName, attributes.version, attributes.expire, attributes.path, attributes.domain, attributes.secure);
+        }
+    };
+
+    var saveTimestamp = function () {
+        cookie(timestampCookieName, new Date().toISOString(), attributes.expire, attributes.path, attributes.domain, attributes.secure);
+    };
+
     var deleteCookies = function () {
         cookie(cookieName, '', -1, attributes.path, attributes.domain, attributes.secure);
         cookie(categoriesCookieName, '', -1, attributes.path, attributes.domain, attributes.secure);
+        cookie(versionCookieName, '', -1, attributes.path, attributes.domain, attributes.secure);
+        cookie(timestampCookieName, '', -1, attributes.path, attributes.domain, attributes.secure);
     };
 
     var closeBox = function () {
@@ -229,6 +246,19 @@
         cookie(cookieName, true, attributes.expire, attributes.path, attributes.domain, attributes.secure);
     };
 
+    // Wire up elements with [data-cw-reopen] so they trigger reopen() on click
+    var initReopenLinks = function () {
+        var links = document.querySelectorAll('[data-cw-reopen]');
+        for (var i = 0; i < links.length; i++) {
+            (function (link) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    window[fn].reopen();
+                });
+            })(links[i]);
+        }
+    };
+
     // --- public API ---
 
     window[fn] = {
@@ -238,6 +268,8 @@
             } else {
                 cookie(cookieName, true, attributes.expire, attributes.path, attributes.domain, attributes.secure);
             }
+            saveVersion();
+            saveTimestamp();
             closeBox();
             cookieWarnValue = true;
             check(cookieWarnValue);
@@ -246,6 +278,8 @@
         acceptSelected: function () {
             if (!attributes.data.categories) { return; }
             saveCategories(getSelectedFromCheckboxes(attributes.data.categories));
+            saveVersion();
+            saveTimestamp();
             closeBox();
             cookieWarnValue = true;
             check(cookieWarnValue);
@@ -264,6 +298,8 @@
                     closeBox();
                 }
             }
+            saveVersion();
+            saveTimestamp();
             cookieWarnValue = false;
             check(cookieWarnValue);
         },
@@ -293,17 +329,24 @@
             return;
         }
 
-        var bootstrap = window.jQuery && typeof $ == "function" && typeof $().modal == "function";
+        // Bootstrap 4: jQuery + $().modal; Bootstrap 5: window.bootstrap.Modal
+        var bootstrap = (window.jQuery && typeof $ == "function" && typeof $().modal == "function")
+                     || (window.bootstrap && typeof window.bootstrap.Modal === "function");
         var categoriesDef = attributes.data.categories;
         var theme = attributes.theme;
+
+        // Position: "bottom" (default) or "top"
+        var pos = attributes.position === 'top' ? 'top' : 'bottom';
+        var oppPos = pos === 'top' ? 'bottom' : 'top';
+        var shadowY = pos === 'top' ? '' : '-';
 
         // Bootstrap uses its own button classes; otherwise use built-in btn-cw-action
         var btnClass = bootstrap ? 'btn btn-outline-secondary btn-sm' : 'btn btn-cw-action';
 
         // Layout CSS – always applied, theme-independent
         var cssBase = [
-            "#" + elementId + " {position:fixed;z-index:999999;bottom:-140px;left:0;right:0;opacity:0;}",
-            "#" + elementId + ".loaded {opacity:1;bottom:0;}",
+            "#" + elementId + " {position:fixed;z-index:999999;" + pos + ":-140px;left:0;right:0;opacity:0;}",
+            "#" + elementId + ".loaded {opacity:1;" + pos + ":0;}",
             "#" + elementId + ".closed {display:none;}",
             "#" + elementId + ".reject .reject_more {display:block;}",
             "#" + elementId + " .text {max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;flex-wrap:wrap;gap:10px 12px;justify-content:center;text-align:center;}",
@@ -320,10 +363,10 @@
             "@media(max-width:640px){#" + elementId + " .text{padding:12px 14px;gap:8px 10px;}#" + elementId + " .cw-cat-desc{max-width:130px;}}",
         ];
 
-        // Theme definitions
+        // Theme definitions – transition and border adapt to position
         var cssThemes = {
             dark: [
-                "#" + elementId + " {transition:bottom 0.55s cubic-bezier(0.16,1,0.3,1),opacity 0.35s ease;background:linear-gradient(180deg,#0c101a 0%,#101521 100%);border-top:1px solid rgba(80,140,255,0.18);box-shadow:0 -12px 60px rgba(0,0,0,0.6),0 -1px 0 rgba(80,140,255,0.06);}",
+                "#" + elementId + " {transition:" + pos + " 0.55s cubic-bezier(0.16,1,0.3,1),opacity 0.35s ease;background:linear-gradient(180deg,#0c101a 0%,#101521 100%);border-" + oppPos + ":1px solid rgba(80,140,255,0.18);box-shadow:0 " + shadowY + "12px 60px rgba(0,0,0,0.6),0 " + shadowY + "1px 0 rgba(80,140,255,0.06);}",
                 "#" + elementId + " {font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:13.5px;color:#96a3b8;line-height:1.55;}",
                 "#" + elementId + " .btn-cw-action {font-family:inherit;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;background:transparent;color:#6fa8ff;border:1.5px solid rgba(80,140,255,0.32);padding:7px 18px;border-radius:100px;margin-left:6px;transition:background 0.18s,border-color 0.18s,color 0.18s;white-space:nowrap;}",
                 "#" + elementId + " .btn-cw-action:hover {background:rgba(80,140,255,0.1);border-color:rgba(80,140,255,0.65);color:#9fc6ff;}",
@@ -336,7 +379,7 @@
                 "#" + elementId + " a:hover {color:#9fc6ff;border-bottom-color:rgba(80,140,255,0.65);}",
             ],
             light: [
-                "#" + elementId + " {transition:bottom 0.55s cubic-bezier(0.16,1,0.3,1),opacity 0.35s ease;background:#ffffff;border-top:1px solid #e2e8f0;box-shadow:0 -4px 32px rgba(0,0,0,0.09);}",
+                "#" + elementId + " {transition:" + pos + " 0.55s cubic-bezier(0.16,1,0.3,1),opacity 0.35s ease;background:#ffffff;border-" + oppPos + ":1px solid #e2e8f0;box-shadow:0 " + shadowY + "4px 32px rgba(0,0,0,0.09);}",
                 "#" + elementId + " {font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;font-size:13.5px;color:#4b5563;line-height:1.55;}",
                 "#" + elementId + " .btn-cw-action {font-family:inherit;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;background:transparent;color:#374151;border:1.5px solid rgba(55,65,81,0.32);padding:7px 18px;border-radius:100px;margin-left:6px;transition:background 0.18s,border-color 0.18s;white-space:nowrap;}",
                 "#" + elementId + " .btn-cw-action:hover {background:rgba(55,65,81,0.07);border-color:rgba(55,65,81,0.55);}",
@@ -349,7 +392,7 @@
                 "#" + elementId + " a:hover {border-bottom-color:rgba(37,99,235,0.7);}",
             ],
             minimal: [
-                "#" + elementId + " {transition:bottom 0.45s cubic-bezier(0.16,1,0.3,1),opacity 0.3s ease;background:rgba(255,255,255,0.97);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid rgba(0,0,0,0.09);}",
+                "#" + elementId + " {transition:" + pos + " 0.45s cubic-bezier(0.16,1,0.3,1),opacity 0.3s ease;background:rgba(255,255,255,0.97);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-" + oppPos + ":1px solid rgba(0,0,0,0.09);}",
                 "#" + elementId + " {font-size:13px;line-height:1.5;}",
                 "#" + elementId + " .btn-cw-action {font-size:12px;font-weight:500;cursor:pointer;background:transparent;color:inherit;border:1px solid rgba(0,0,0,0.28);padding:5px 14px;border-radius:4px;margin-left:8px;transition:background 0.15s,border-color 0.15s;white-space:nowrap;}",
                 "#" + elementId + " .btn-cw-action:hover {background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.4);}",
@@ -363,7 +406,7 @@
 
         // Bootstrap-specific CSS (replaces theme, uses Bootstrap's own button styling)
         var cssBootstrap = [
-            "#" + elementId + " {transition:bottom 0.55s cubic-bezier(0.16,1,0.3,1),opacity 0.35s ease;background:linear-gradient(180deg,#0c101a 0%,#101521 100%);border-top:1px solid rgba(80,140,255,0.18);box-shadow:0 -12px 60px rgba(0,0,0,0.6);}",
+            "#" + elementId + " {transition:" + pos + " 0.55s cubic-bezier(0.16,1,0.3,1),opacity 0.35s ease;background:linear-gradient(180deg,#0c101a 0%,#101521 100%);border-" + oppPos + ":1px solid rgba(80,140,255,0.18);box-shadow:0 " + shadowY + "12px 60px rgba(0,0,0,0.6);}",
             "#" + elementId + " {color:#b0bec5;}",
             "#" + elementId + " a {color:#90caf9;}",
             "#" + elementId + " a:hover {color:#bbdefb;}",
@@ -466,6 +509,16 @@
 
         document.body.appendChild(wbox);
 
+        // data-once: immediately persist a "rejected" state so the banner won't re-appear
+        // on subsequent visits if the user closes the page without interacting
+        if (attributes.once) {
+            if (categoriesDef) {
+                saveCategories(buildRequiredCategories(categoriesDef));
+            } else {
+                cookie(cookieName, false, attributes.expire, attributes.path, attributes.domain, attributes.secure);
+            }
+        }
+
         setTimeout(function () {
             wbox.className = wbox.className + " loaded";
             var firstBtn = document.getElementById(fn + 'Accept');
@@ -482,11 +535,26 @@
         }
 
         if (readyState == "complete") {
-            var shouldShow = attributes.data.categories
-                ? !cookie(categoriesCookieName)
-                : !cookieWarnValue;
 
-            if (shouldShow) {
+            initReopenLinks();
+
+            var categoriesDef = attributes.data.categories;
+            var hasConsent = categoriesDef ? !!cookie(categoriesCookieName) : !!cookieWarnValue;
+
+            // Version check: if data-version is set and the stored version differs, invalidate consent
+            if (hasConsent && attributes.version) {
+                var storedVersion = cookie(versionCookieName);
+                if (storedVersion !== attributes.version) {
+                    if (attributes.debug) {
+                        console.log("version mismatch: stored=" + storedVersion + " current=" + attributes.version);
+                    }
+                    deleteCookies();
+                    cookieWarnValue = undefined;
+                    hasConsent = false;
+                }
+            }
+
+            if (!hasConsent) {
                 warn();
             } else {
                 check(cookieWarnValue);

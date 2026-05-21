@@ -1,0 +1,267 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <title>cookie-warn – Google Consent Mode v2</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./demo.css">
+
+    <!--
+        STEP 1 — Define gtag and set denied defaults BEFORE GA4/GTM loads.
+        In production replace this mock with the real GA4 snippet.
+    -->
+    <script>
+        // Mock dataLayer/gtag so the demo works without a real GA4 property
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+
+        // Set all signals to denied by default
+        gtag('consent', 'default', {
+            analytics_storage:     'denied',
+            ad_storage:            'denied',
+            ad_user_data:          'denied',
+            ad_personalization:    'denied',
+            functionality_storage: 'granted',
+            wait_for_update:       500
+        });
+        gtag('js', new Date());
+
+        // In production you would also add:
+        // <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+        // gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <script src="./demo.js"></script>
+
+    <!--
+        STEP 3 — Load cookie-warn with analytics + marketing categories.
+        Must come AFTER the consent default block above.
+    -->
+    <script id="cookieScript" src="./../dist/cookie-warn.js"
+        data-lang-en="{
+            'text': 'We use cookies to improve your experience.',
+            'more_text': 'Privacy policy',
+            'more_link': 'https://ec.europa.eu/info/law/law-topic/data-protection_en',
+            'accept_text': 'Accept all',
+            'accept_selected_text': 'Save settings',
+            'reject_text': 'Necessary only',
+            'categories': {
+                'necessary':  {'label': 'Necessary',  'description': 'Required for the site to function.',                         'required': true},
+                'analytics':  {'label': 'Analytics',  'description': 'Google Analytics — helps us understand how visitors use the site.'},
+                'marketing':  {'label': 'Marketing',  'description': 'Google Ads — personalised ads and conversion tracking.'}
+            }
+        }"
+        data-debug="true"
+        data-callback="cookieWarnCallback">
+    </script>
+
+    <style>
+        /* Consent signal table */
+        .signal-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Space Mono', monospace;
+            font-size: 11.5px;
+            margin: 16px 0 24px;
+        }
+        .signal-table th {
+            text-align: left;
+            padding: 7px 12px;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .signal-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-mid);
+        }
+        .signal-table tr:last-child td { border-bottom: none; }
+        .signal-table td:first-child { color: var(--code-fg); }
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 100px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .badge-granted { background: rgba(126,207,160,0.14); color: #7ecfa0; border: 1px solid rgba(126,207,160,0.3); }
+        .badge-denied  { background: rgba(255,100,100,0.1);  color: #e07070; border: 1px solid rgba(255,100,100,0.2); }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="site-header">
+            <div class="site-header-inner">
+                <h1><span class="brand">cookie-warn</span><span class="sep">/</span>Consent Mode v2</h1>
+                <span class="tag">Google Analytics · Google Ads · EEA required</span>
+            </div>
+            <a class="action-link" href="./index.html">← All demos</a>
+        </div>
+
+        <p>
+            Google Consent Mode v2 is mandatory in the EEA for GA4 and Google Ads since March 2024.
+            Instead of blocking GA4 until consent, you load it immediately with denied defaults — GA4 then
+            models conversions for users who decline, preserving campaign signal quality.
+        </p>
+
+        <ul>
+            <li>GA4 loads with <code>analytics_storage: 'denied'</code> and <code>ad_storage: 'denied'</code> by default</li>
+            <li><code>wait_for_update: 500</code> gives cookie-warn time to fire before GA4's first event</li>
+            <li>The callback updates consent signals on <strong>every</strong> page load — not just on first consent</li>
+            <li><code>analytics</code> category → <code>analytics_storage</code></li>
+            <li><code>marketing</code> category → <code>ad_storage</code> + <code>ad_user_data</code> + <code>ad_personalization</code></li>
+        </ul>
+
+        <h2>Live consent signals</h2>
+        <table class="signal-table" id="signalTable">
+            <thead>
+                <tr>
+                    <th>Signal</th>
+                    <th>State</th>
+                    <th>Set by</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>analytics_storage</td>    <td><span class="badge badge-denied" id="sig-analytics">denied</span></td>    <td>default</td></tr>
+                <tr><td>ad_storage</td>           <td><span class="badge badge-denied" id="sig-ad">denied</span></td>           <td>default</td></tr>
+                <tr><td>ad_user_data</td>         <td><span class="badge badge-denied" id="sig-addata">denied</span></td>       <td>default</td></tr>
+                <tr><td>ad_personalization</td>   <td><span class="badge badge-denied" id="sig-adpers">denied</span></td>       <td>default</td></tr>
+                <tr><td>functionality_storage</td><td><span class="badge badge-granted" id="sig-func">granted</span></td><td>default (always)</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Actions</h2>
+        <a class="action-link" href="#" onclick="cookieScript.reopen(); return false;">↺ Reset consent</a>
+
+        <h2>Code</h2>
+        <div class="code-block">
+            <div class="code-header">
+                <span class="code-label">HTML</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>&lt;head&gt;
+  &lt;!-- STEP 1: gtag defaults — denied before GA4 loads --&gt;
+  &lt;script&gt;
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('consent', 'default', {
+      analytics_storage:     'denied',
+      ad_storage:            'denied',
+      ad_user_data:          'denied',
+      ad_personalization:    'denied',
+      functionality_storage: 'granted',
+      wait_for_update:       500
+    });
+    gtag('js', new Date());
+  &lt;/script&gt;
+
+  &lt;!-- STEP 2: Load GA4 (respects denied defaults above) --&gt;
+  &lt;script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"&gt;&lt;/script&gt;
+  &lt;script&gt;gtag('config', 'G-XXXXXXXXXX');&lt;/script&gt;
+
+  &lt;!-- STEP 3: cookie-warn with analytics + marketing categories --&gt;
+  &lt;script
+    id="cookieScript"
+    data-lang-en="{
+      'text': 'We use cookies to improve your experience.',
+      'accept_text': 'Accept all',
+      'accept_selected_text': 'Save settings',
+      'reject_text': 'Necessary only',
+      'categories': {
+        'necessary': {'label': 'Necessary', 'description': 'Required for the site to function.', 'required': true},
+        'analytics': {'label': 'Analytics', 'description': 'Google Analytics.'},
+        'marketing': {'label': 'Marketing', 'description': 'Google Ads — personalised ads and conversion tracking.'}
+      }
+    }"
+    data-callback="cookieWarnCallback"
+    src="cookie-warn.min.js"&gt;
+  &lt;/script&gt;
+&lt;/head&gt;
+
+&lt;script&gt;
+  function cookieWarnCallback(accepted, categories) {
+    if (!categories) {
+      gtag('consent', 'update', {
+        analytics_storage: accepted ? 'granted' : 'denied'
+      });
+      return;
+    }
+    gtag('consent', 'update', {
+      analytics_storage:  categories.analytics ? 'granted' : 'denied',
+      ad_storage:         categories.marketing ? 'granted' : 'denied',
+      ad_user_data:       categories.marketing ? 'granted' : 'denied',
+      ad_personalization: categories.marketing ? 'granted' : 'denied'
+    });
+  }
+&lt;/script&gt;</code></pre>
+        </div>
+
+        <h2>Navigation</h2>
+        <ul class="demo-list">
+            <li><a href="./index.html">← All demos</a> <span class="desc"></span></li>
+            <li><a href="./demo-categories.html">Granular category consent</a> <span class="desc"></span></li>
+            <li><a href="./demo.html">Dark theme (basic)</a> <span class="desc"></span></li>
+        </ul>
+
+        <div id="output"></div>
+    </div>
+
+    <script>
+        // STEP 4 — Update consent signals in the callback and reflect in the UI table
+        function cookieWarnCallback(accepted, categories) {
+            var update;
+
+            if (!categories) {
+                update = { analytics_storage: accepted ? 'granted' : 'denied' };
+            } else {
+                update = {
+                    analytics_storage:  categories.analytics ? 'granted' : 'denied',
+                    ad_storage:         categories.marketing ? 'granted' : 'denied',
+                    ad_user_data:       categories.marketing ? 'granted' : 'denied',
+                    ad_personalization: categories.marketing ? 'granted' : 'denied'
+                };
+            }
+
+            // Send to GA4 (mocked in this demo)
+            gtag('consent', 'update', update);
+
+            // Reflect in the UI table
+            function setBadge(id, state) {
+                var el = document.getElementById(id);
+                if (!el) { return; }
+                el.textContent = state;
+                el.className = 'badge ' + (state === 'granted' ? 'badge-granted' : 'badge-denied');
+                el.closest('tr').cells[2].textContent = 'callback';
+            }
+
+            setBadge('sig-analytics', update.analytics_storage || 'denied');
+            setBadge('sig-ad',        update.ad_storage        || 'denied');
+            setBadge('sig-addata',    update.ad_user_data      || 'denied');
+            setBadge('sig-adpers',    update.ad_personalization || 'denied');
+
+            // Show in output box
+            var lines = ['gtag(\'consent\', \'update\', {'];
+            Object.keys(update).forEach(function (k) {
+                lines.push('  ' + k + ': \'' + update[k] + '\'');
+            });
+            lines.push('})');
+            document.getElementById('output').innerHTML = lines.join('<br>');
+
+            console.log('cookieWarnCallback', accepted, categories);
+            console.log('gtag consent update', update);
+        }
+    </script>
+</body>
+
+</html>

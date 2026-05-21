@@ -17,7 +17,7 @@ EU Cookie Law warning message – GDPR / ePrivacy / EAA compliant
 
 ## Features
 
-- Zero-config: works with a single line of HTML
+- Zero-config: drop in one script tag and it works out of the box
 - jQuery not required
 - Multilanguage support via `data-lang-*` attributes
 - Three built-in themes: `dark`, `light`, `minimal`
@@ -46,7 +46,7 @@ All parameters are optional.
 
 ### `data-lang-*` attributes
 
-Texts and links are set per language via `data-lang-{code}` on the script/div element. The language is detected from `<html lang="...">`.
+Texts and links are set per language via `data-lang-{code}` on the script/div element. The language is detected from `<html lang="...">`. If no `data-lang-*` attribute matches the current language, English defaults are used automatically.
 
 | Key | Default | Description |
 |-----|---------|-------------|
@@ -74,6 +74,9 @@ Texts and links are set per language via `data-lang-{code}` on the script/div el
 | `data-class` | — | Extra CSS class on the banner element |
 | `data-style` | — | Additional inline CSS appended to the banner styles |
 | `data-theme` | `"dark"` | Visual theme: `dark`, `light`, or `minimal` (see below) |
+| `data-position` | `"bottom"` | Banner position: `bottom` or `top` |
+| `data-version` | — | Consent version string. If the stored version differs, existing consent is invalidated and the banner re-appears. Useful after privacy policy changes. |
+| `data-once` | `false` | Show the banner only once. If set to `true`, a rejected-state cookie is written the moment the banner is shown, so it will not re-appear on subsequent visits even if the user never clicks a button (PECR / implied consent use case). |
 | `data-debug` | `false` | Log debug info to the console |
 
 ## Themes
@@ -92,12 +95,13 @@ Choose a built-in theme with `data-theme`. All themes are fully responsive and G
 
 ### Bootstrap
 
-When jQuery and Bootstrap are detected on the page, cookie-warn automatically switches to Bootstrap mode:
+When Bootstrap is detected on the page, cookie-warn automatically switches to Bootstrap mode:
 
 - Button classes become `btn btn-outline-secondary btn-sm` (equal visual weight, EDPB-compliant)
 - Built-in font and button CSS is skipped; Bootstrap handles typography
 - Banner background, ARIA attributes, and category layout still apply
-- Compatible with Bootstrap 4 and 5
+- **Bootstrap 5**: detected via `window.bootstrap.Modal` — jQuery not required
+- **Bootstrap 4**: detected via jQuery + `$().modal` — jQuery must be loaded before cookie-warn
 
 ### Multilanguage & language switching
 
@@ -290,11 +294,17 @@ The minimal theme has almost no own styling — it inherits the page's font and 
 
 ### Consent withdrawal example
 
-Add a link anywhere on your page so users can change their preferences at any time (required by GDPR Art. 7(3)):
+Add a link anywhere on your page so users can change their preferences at any time (required by GDPR Art. 7(3)). Two equivalent ways:
 
 ```html
+<!-- inline JS -->
 <a href="#" onclick="cookieScript.reopen(); return false;">Cookie settings</a>
+
+<!-- data attribute (no inline JS needed) -->
+<a href="#" data-cw-reopen>Cookie settings</a>
 ```
+
+Any element with `data-cw-reopen` is wired up automatically when the library loads.
 
 ## Callback
 
@@ -308,11 +318,96 @@ function cookieWarnCallback(accepted, categories) {
 }
 ```
 
+## Google Consent Mode v2
+
+Google Consent Mode v2 is required for Google Analytics 4 and Google Ads in the EEA. Without it, conversion modelling and cross-channel attribution are degraded and your Google Ads campaigns lose signal.
+
+The key difference from a simple callback-based script loader: **always load GA4 / GTM, but start with denied defaults, then update consent in the callback.** GA4 will model conversions even for users who decline, as long as Consent Mode is active.
+
+### Setup
+
+```html
+<head>
+  <!-- 1. Define gtag and set defaults BEFORE GA4/GTM loads -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('consent', 'default', {
+      analytics_storage:     'denied',
+      ad_storage:            'denied',
+      ad_user_data:          'denied',
+      ad_personalization:    'denied',
+      functionality_storage: 'granted',
+      wait_for_update:       500
+    });
+    gtag('js', new Date());
+  </script>
+
+  <!-- 2. Load GA4 — it will respect the denied defaults above -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>gtag('config', 'G-XXXXXXXXXX');</script>
+
+  <!-- 3. Load cookie-warn with categories -->
+  <script
+    id="cookieScript"
+    data-lang-en="{
+      'text': 'We use cookies to improve your experience.',
+      'accept_text': 'Accept all',
+      'accept_selected_text': 'Save settings',
+      'reject_text': 'Necessary only',
+      'categories': {
+        'necessary': {'label': 'Necessary', 'description': 'Required for the site to function.', 'required': true},
+        'analytics': {'label': 'Analytics', 'description': 'Google Analytics — helps us understand usage.'},
+        'marketing': {'label': 'Marketing', 'description': 'Google Ads — personalised ads and conversion tracking.'}
+      }
+    }"
+    data-callback="cookieWarnCallback"
+    src="cookie-warn.min.js">
+  </script>
+</head>
+
+<script>
+  function cookieWarnCallback(accepted, categories) {
+    if (!categories) {
+      // simple mode — no category breakdown available
+      gtag('consent', 'update', {
+        analytics_storage: accepted ? 'granted' : 'denied'
+      });
+      return;
+    }
+    gtag('consent', 'update', {
+      analytics_storage:  categories.analytics ? 'granted' : 'denied',
+      ad_storage:         categories.marketing ? 'granted' : 'denied',
+      ad_user_data:       categories.marketing ? 'granted' : 'denied',
+      ad_personalization: categories.marketing ? 'granted' : 'denied'
+    });
+  }
+</script>
+```
+
+### Consent signal mapping
+
+| cookie-warn category | Consent Mode v2 signal(s) |
+|---|---|
+| `necessary` (always granted) | `functionality_storage: 'granted'` |
+| `analytics` | `analytics_storage` |
+| `marketing` | `ad_storage`, `ad_user_data`, `ad_personalization` |
+
+### Notes
+
+- `wait_for_update: 500` gives cookie-warn 500 ms to fire `gtag('consent', 'update', ...)` before GA4 sends its first event. Match this to your `data-delay` value if you change it.
+- The callback fires on **every page load**, not just on first consent. This is correct — GA4 needs the consent update on every page.
+- If using **Google Tag Manager**: set the `consent default` call in a Custom HTML tag on the Consent Initialization trigger, before the GTM container fires.
+- For sites outside the EEA where Consent Mode is not legally required, you can still use it — it improves data quality with modelled conversions.
+
 ## Cookies
 
 | Cookie name | Value | Description |
 |-------------|-------|-------------|
 | `cookieWarn.accepted` | `true` / `false` | Set in simple mode |
 | `cookieWarn.categories` | `necessary,analytics` | Comma-separated accepted category keys (categories mode) |
+| `cookieWarn.version` | string | Stored value of `data-version` (if set); used for consent invalidation on version mismatch |
+| `cookieWarn.timestamp` | ISO 8601 string | UTC timestamp of the last consent action (accept / reject) |
 
-Both cookies are set with `SameSite=Lax` and `Secure` (on HTTPS).
+All cookies are set with `SameSite=Lax` and `Secure` (on HTTPS).
+
