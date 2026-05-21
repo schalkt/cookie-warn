@@ -198,11 +198,14 @@ ul li::before {
   text-transform: uppercase;
   color: var(--muted);
   border: 1px solid var(--border2);
-  border-bottom: 1px solid var(--border2);
   padding: 8px 18px;
   border-radius: 100px;
   margin: 4px 0 24px;
   transition: color 0.18s, border-color 0.18s, background 0.18s;
+  /* button reset */
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .action-link:hover {
