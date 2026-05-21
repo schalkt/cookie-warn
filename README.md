@@ -3,8 +3,11 @@
 EU Cookie Law warning message – GDPR / ePrivacy / EAA compliant
 
 [![npm](https://img.shields.io/npm/dt/cookie-warn.svg?style=flat-square)](https://www.npmjs.com/package/cookie-warn)
-[![GitHub issues](https://img.shields.io/github/issues/schalkt/cookie-warn.svg?style=flat-square)](https://github.com/schalkt/cookie-warn/issues)
 [![npm](https://img.shields.io/npm/v/cookie-warn.svg?style=flat-square)](https://www.npmjs.com/package/cookie-warn)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/schalkt/cookie-warn/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/schalkt/cookie-warn.svg?style=flat-square)](https://github.com/schalkt/cookie-warn/issues)
+[![Bundle size](https://img.shields.io/bundlephobia/minzip/cookie-warn?style=flat-square)](https://bundlephobia.com/package/cookie-warn)
+[![jsDelivr](https://img.shields.io/jsdelivr/npm/hy/cookie-warn?style=flat-square)](https://www.jsdelivr.com/package/npm/cookie-warn)
 
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=schalkt_cookie-warn&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=schalkt_cookie-warn)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=schalkt_cookie-warn&metric=security_rating)](https://sonarcloud.io/dashboard?id=schalkt_cookie-warn)
