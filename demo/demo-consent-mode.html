@@ -26,11 +26,11 @@
             wait_for_update:       500
         });
         gtag('js', new Date());
-
-        // In production you would also add:
-        // <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-        // gtag('config', 'G-XXXXXXXXXX');
     </script>
+    <!-- In production also add:
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+        <script>gtag('config', 'G-XXXXXXXXXX');</script>
+    -->
 
     <script src="./demo.js"></script>
 
@@ -61,7 +61,7 @@
         .signal-table {
             width: 100%;
             border-collapse: collapse;
-            font-family: 'Space Mono', monospace;
+            font-family: ui-monospace, 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
             font-size: 11.5px;
             margin: 16px 0 24px;
         }
@@ -139,7 +139,7 @@
         </table>
 
         <h2>Actions</h2>
-        <a class="action-link" href="#" onclick="cookieScript.reopen(); return false;">↺ Reset consent</a>
+        <button type="button" class="action-link" onclick="cookieScript.reopen(); return false;">↺ Reset consent</button>
 
         <h2>Code</h2>
         <div class="code-block">
