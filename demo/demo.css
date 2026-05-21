@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap');
-
 /* ─── Variables ─────────────────────────────────────────────────────────── */
 :root {
   --bg:          #080c12;
@@ -24,7 +22,7 @@ html { font-size: 16px; -webkit-font-smoothing: antialiased; }
 
 /* ─── Body ──────────────────────────────────────────────────────────────── */
 body {
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background-color: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -56,7 +54,7 @@ body {
 
 /* ─── Typography ─────────────────────────────────────────────────────────── */
 h1 {
-  font-family: 'Space Mono', monospace;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
   font-size: 1.45rem;
   font-weight: 700;
   color: var(--text-bright);
@@ -68,7 +66,7 @@ h1 .brand { color: var(--accent); }
 h1 .sep   { color: var(--muted); font-weight: 400; margin: 0 6px; }
 
 h2 {
-  font-family: 'Space Mono', monospace;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
   font-size: 0.72rem;
   font-weight: 700;
   color: var(--muted);
@@ -89,7 +87,7 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-family: 'Space Mono', monospace;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
   font-size: 10.5px;
   background: var(--accent-dim);
   color: var(--tag-fg);
@@ -137,7 +135,7 @@ ul li:last-child { border-bottom: none; }
 
 ul li::before {
   content: '→';
-  font-family: 'Space Mono', monospace;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
   font-size: 0.7rem;
   color: var(--accent);
   flex-shrink: 0;
@@ -170,7 +168,7 @@ ul li::before {
 .demo-list li::before { display: none; }
 
 .demo-list a {
-  font-family: 'Outfit', sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 0.92rem;
   font-weight: 600;
   color: var(--text-bright);
@@ -193,7 +191,7 @@ ul li::before {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-family: 'Space Mono', monospace;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -222,7 +220,7 @@ ul li::before {
   border: 1px solid var(--border);
   border-left: 3px solid var(--accent);
   border-radius: 8px;
-  font-family: 'Space Mono', monospace;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
   font-size: 12px;
   color: var(--accent);
   line-height: 1.85;
@@ -233,7 +231,7 @@ ul li::before {
 
 /* ─── Code ───────────────────────────────────────────────────────────────── */
 code {
-  font-family: 'Space Mono', monospace;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
   font-size: 11.5px;
   background: var(--surface2);
   color: var(--code-fg);
@@ -261,7 +259,7 @@ code {
 }
 
 .code-label {
-  font-family: 'Space Mono', monospace;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
@@ -270,7 +268,7 @@ code {
 }
 
 .copy-btn {
-  font-family: 'Space Mono', monospace;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
   font-size: 11px;
   font-weight: 700;
   background: transparent;
@@ -297,7 +295,7 @@ pre {
   margin: 0;
   padding: 18px 20px;
   overflow-x: auto;
-  font-family: 'Space Mono', monospace;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
   font-size: 11.5px;
   line-height: 1.7;
   color: var(--text-mid);
