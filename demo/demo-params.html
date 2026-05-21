@@ -1,56 +1,102 @@
 <!DOCTYPE HTML>
 <html lang="en">
 
-<head>  
-
-    <title>EU Cookie Law warning message demo page</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
+<head>
+    <title>cookie-warn – all parameters</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./demo.css">
     <script src="./demo.js"></script>
-
-    <script id="cookieScript" type="text/javascript" src="./../dist/cookie-warn.js"
+    <script id="cookieScript" src="./../dist/cookie-warn.js"
         data-lang-en="{
-             'text':'Our website uses cookies.',
-             'accept_text': 'I accept',
-             'more_text': 'Click here for more information',
-             'more_link': 'https://ec.europa.eu/info/law/law-topic/data-protection_en',
-             'reject_text': 'I reject',
-             'reject_info': 'You can disable unwanted cookies by using this program',
-             'reject_link': 'https://www.ghostery.com/',
-             'close_text': 'Close'
-            }"
+            'text': 'Our website uses cookies.',
+            'accept_text': 'I accept',
+            'more_text': 'Click here for more information',
+            'more_link': 'https://ec.europa.eu/info/law/law-topic/data-protection_en',
+            'reject_text': 'I reject',
+            'reject_info': 'You can disable unwanted cookies by using this program',
+            'reject_link': 'https://www.ghostery.com/',
+            'close_text': 'Close'
+        }"
         data-debug="true"
         data-expire="90"
         data-path="/cookie-warn/demo"
         data-delay="220"
         data-class="myCookieWarningClass"
-        data-style="#cookieScriptBox a { color: lightblue } #cookieScriptBox .btn { border-radius: 5px }"
+        data-style="#cookieScriptBox a { color: lightblue } #cookieScriptBox .btn-cw-action { border-radius: 6px }"
         data-callback="cookieWarnCallback">
-        </script>
-
+    </script>
 </head>
 
 <body>
-
     <div class="container">
-        <h1>EU cookie warning example</h1>
+        <div class="site-header">
+            <div class="site-header-inner">
+                <h1><span class="brand">cookie-warn</span><span class="sep">/</span>All parameters</h1>
+                <span class="tag">simple mode</span>
+            </div>
+            <a class="action-link" href="./index.html">← All demos</a>
+        </div>
+
         <ul>
-            <li>with parameters (cookie expire and path, debug, animation delay, custom style)</li>
-            <li>with reject info box and close button</li>
+            <li>Custom cookie expire <code>90</code> days and path <code>/cookie-warn/demo</code></li>
+            <li>Animation delay <code>220ms</code> &ndash; banner appears faster</li>
+            <li>Custom CSS class <code>myCookieWarningClass</code> adds rounded corners and shadow</li>
+            <li>Inline style override via <code>data-style</code></li>
+            <li>Reject info box shown after clicking <em>I reject</em></li>
+            <li>Debug mode enabled &ndash; check the browser console</li>
         </ul>
-        <br>
-        <h2>More examples</h2>
-        <ul>
-            <li><a href="./demo.html">Basic example</a></li>
-            <li><a href="./demo-params.html">Different style and all parameters with reject info</a></li>
-            <li><a href="./demo-bootstrap.html">Bootstrap example</a></li>
+
+        <h2>Actions</h2>
+        <a class="action-link" href="#" onclick="cookieScript.reopen(); return false;">↺ Reset consent</a>
+
+        <h2>Navigation</h2>
+        <ul class="demo-list">
+            <li><a href="./index.html">← All demos</a> <span class="desc"></span></li>
+            <li><a href="./demo.html">Basic example</a> <span class="desc"></span></li>
+            <li><a href="./demo-categories.html">Granular category consent</a> <span class="desc"></span></li>
+            <li><a href="./demo-bootstrap.html">Bootstrap example</a> <span class="desc"></span></li>
         </ul>
+
+        <h2>Code</h2>
+        <div class="code-block">
+            <div class="code-header">
+                <span class="code-label">HTML</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>&lt;script
+  id="cookieScript"
+  data-lang-en="{
+    'text': 'Our website uses cookies.',
+    'accept_text': 'I accept',
+    'more_text': 'Click here for more information',
+    'more_link': 'https://ec.europa.eu/info/law/law-topic/data-protection_en',
+    'reject_text': 'I reject',
+    'reject_info': 'You can disable unwanted cookies by using this program',
+    'reject_link': 'https://www.ghostery.com/',
+    'close_text': 'Close'
+  }"
+  data-expire="90"
+  data-path="/cookie-warn/demo"
+  data-delay="220"
+  data-class="myCookieWarningClass"
+  data-style="#cookieScriptBox a { color: lightblue } #cookieScriptBox .btn-cw-action { border-radius: 6px }"
+  data-callback="cookieWarnCallback"
+  src="cookie-warn.min.js"&gt;
+&lt;/script&gt;
+
+&lt;script&gt;
+  function cookieWarnCallback(accepted) {
+    if (accepted) { /* load analytics, ads, etc. */ }
+  }
+&lt;/script&gt;</code></pre>
+        </div>
+
         <div id="output"></div>
     </div>
-
-    <script async src="https://stat.schalk.hu:52222/sping1.js?token=oUQxyJxR695lzBa7qrSUrP1Q2H8qILMoAo7LCCX" id="schtat" server="https://stat.schalk.hu:52222" delay="1" key="iH86fnFbyJpprnegz9IB2jc8LOh37Sky4g2MDLxG5GrmCrBKfktqxXQid49uzSG6HYha3EvZ"></script>	
-
 </body>
 
 </html>

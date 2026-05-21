@@ -2,34 +2,61 @@
 <html lang="en">
 
 <head>
-
-    <title>EU Cookie Law warning message demo page</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
+    <title>cookie-warn – basic example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./demo.css">
     <script src="./demo.js"></script>
-
-    <script id="cookieScript" type="text/javascript" src="./../dist/cookie-warn.js"></script>
-
+    <script id="cookieScript" src="./../dist/cookie-warn.js"
+        data-debug="true"
+        data-callback="cookieWarnCallback">
+    </script>
 </head>
 
 <body>
     <div class="container">
-        <h1>EU cookie warning example</h1>
+        <div class="site-header">
+            <div class="site-header-inner">
+                <h1><span class="brand">cookie-warn</span><span class="sep">/</span>Basic</h1>
+                <span class="tag">zero-config</span>
+            </div>
+            <a class="action-link" href="./index.html">← All demos</a>
+        </div>
+
         <ul>
-            <li>without html lang attribute (default "en")</li>
-            <li>without and any other parameters</li>
+            <li>No <code>data-lang-*</code> attribute &ndash; English defaults are used automatically</li>
+            <li>A single <code>&lt;script id="cookieScript"&gt;</code> tag is all that is needed</li>
+            <li>Check the browser console for debug output</li>
         </ul>
-        <br>
-        <h2>More examples</h2>
-        <ul>
-            <li><a href="./demo.html">Basic example</a></li>
-            <li><a href="./demo-params.html">Different style and all parameters with reject info</a></li>
-            <li><a href="./demo-bootstrap.html">Bootstrap example</a></li>
+
+        <h2>Actions</h2>
+        <a class="action-link" href="#" onclick="cookieScript.reopen(); return false;">↺ Reset consent</a>
+
+        <h2>Navigation</h2>
+        <ul class="demo-list">
+            <li><a href="./index.html">← All demos</a> <span class="desc"></span></li>
+            <li><a href="./demo-params.html">All parameters + reject info</a> <span class="desc"></span></li>
+            <li><a href="./demo-categories.html">Granular category consent</a> <span class="desc"></span></li>
+            <li><a href="./demo-bootstrap.html">Bootstrap example</a> <span class="desc"></span></li>
         </ul>
+
+        <h2>Code</h2>
+        <div class="code-block">
+            <div class="code-header">
+                <span class="code-label">HTML</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;script id="cookieScript" src="cookie-warn.min.js"&gt;&lt;/script&gt;
+&lt;/head&gt;</code></pre>
+        </div>
+
         <div id="output"></div>
     </div>
-    
 </body>
 
 </html>

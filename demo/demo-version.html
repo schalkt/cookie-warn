@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <title>cookie-warn – data-version</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./demo.css">
+    <script src="./demo.js"></script>
+    <script id="cookieScript" src="./../dist/cookie-warn.js"
+        data-version="1"
+        data-lang-en="{
+            'text': 'We use cookies to improve your experience.',
+            'more_text': 'Privacy policy',
+            'more_link': 'https://ec.europa.eu/info/law/law-topic/data-protection_en',
+            'accept_text': 'Accept all',
+            'accept_selected_text': 'Save settings',
+            'reject_text': 'Necessary only',
+            'categories': {
+                'necessary':  {'label': 'Necessary',  'description': 'Required for the site to function.',          'required': true},
+                'analytics':  {'label': 'Analytics',  'description': 'Help us understand how visitors use the site.'},
+                'marketing':  {'label': 'Marketing',  'description': 'Used for personalised ads and content.'}
+            }
+        }"
+        data-debug="true"
+        data-callback="cookieWarnCallback">
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="site-header">
+            <div class="site-header-inner">
+                <h1><span class="brand">cookie-warn</span><span class="sep">/</span>Version</h1>
+                <span class="tag">data-version="1"</span>
+            </div>
+            <a class="action-link" href="./index.html">← All demos</a>
+        </div>
+
+        <p>
+            <code>data-version</code> invalidates stored consent when your privacy policy changes.
+            When the library loads and finds a stored version that differs from <code>data-version</code>,
+            it deletes all consent cookies and re-shows the banner — even if the user had previously accepted.
+        </p>
+
+        <ul>
+            <li>Current script has <code>data-version="1"</code></li>
+            <li>Consent is stored together with the version in <code>cookieWarn.version</code></li>
+            <li>On next load: if stored version &ne; <code>data-version</code>, all cookies are cleared and the banner re-appears</li>
+            <li>Click <em>Simulate version mismatch</em> below to see this in action</li>
+        </ul>
+
+        <h2>Actions</h2>
+        <a class="action-link" href="#" onclick="simulateMismatch(); return false;">⚡ Simulate version mismatch</a>
+        <a class="action-link" href="#" onclick="cookieScript.reopen(); return false;" style="margin-left:8px;">↺ Reset consent</a>
+
+        <h2>Code</h2>
+        <div class="code-block">
+            <div class="code-header">
+                <span class="code-label">HTML</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>&lt;!-- Start with data-version="1"; bump to "2", "3" etc. when your privacy policy changes --&gt;
+&lt;script
+  id="cookieScript"
+  data-version="1"
+  data-lang-en="{
+    'text': 'We updated our privacy policy. Please review your cookie preferences.',
+    'accept_text': 'Accept all',
+    'accept_selected_text': 'Save settings',
+    'reject_text': 'Necessary only',
+    'categories': {
+      'necessary': {'label': 'Necessary', 'description': 'Required for the site to function.', 'required': true},
+      'analytics': {'label': 'Analytics', 'description': 'Help us understand how visitors use the site.'},
+      'marketing': {'label': 'Marketing', 'description': 'Used for personalised ads and content.'}
+    }
+  }"
+  data-callback="cookieWarnCallback"
+  src="cookie-warn.min.js"&gt;
+&lt;/script&gt;
+
+&lt;!--
+  Cookies written on consent:
+    cookieWarn.categories = "necessary,analytics"
+    cookieWarn.version    = "1"
+    cookieWarn.timestamp  = "2025-05-21T10:00:00.000Z"
+
+  When data-version is bumped to "3":
+    stored version "2" != "3" → cookies cleared → banner re-appears
+--&gt;</code></pre>
+        </div>
+
+        <h2>Navigation</h2>
+        <ul class="demo-list">
+            <li><a href="./index.html">← All demos</a> <span class="desc"></span></li>
+            <li><a href="./demo-categories-en.html">Granular category consent</a> <span class="desc"></span></li>
+            <li><a href="./demo-consent-mode.html">Google Consent Mode v2</a> <span class="desc"></span></li>
+        </ul>
+
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function cookieWarnCallback(accepted, categories) {
+            var message = 'Callback fired &mdash; accepted: <strong>' + (accepted ? 'TRUE' : 'FALSE') + '</strong>';
+            if (categories) {
+                var cats = Object.entries(categories)
+                    .map(function (e) { return e[0] + ': ' + (e[1] ? '✓' : '✗'); })
+                    .join(' &nbsp;|&nbsp; ');
+                message += '<br>Categories: ' + cats;
+            }
+            var stored = document.cookie.split(';').find(function (c) { return c.trim().startsWith('cookieWarn.version='); });
+            if (stored) {
+                message += '<br>Stored version: <strong>' + stored.split('=')[1] + '</strong>';
+            }
+            document.getElementById('output').innerHTML = message;
+            console.log('cookieWarnCallback', accepted, categories);
+        }
+
+        // Write consent cookies as if they were set by version 1, then reload —
+        // the library will detect the mismatch and re-show the banner
+        function simulateMismatch() {
+            document.cookie = 'cookieWarn.accepted=true; path=/';
+            document.cookie = 'cookieWarn.categories=necessary,analytics,marketing; path=/';
+            document.cookie = 'cookieWarn.version=1; path=/';
+            location.reload();
+        }
+    </script>
+</body>
+
+</html>

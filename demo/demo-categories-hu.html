@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html lang="hu">
+
+<head>
+    <title>cookie-warn – granular category consent (HU)</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./demo.css">
+    <script src="./demo.js"></script>
+    <script id="cookieScript" src="./../dist/cookie-warn.js"
+        data-lang-en="{
+            'text': 'We use cookies to improve your experience.',
+            'more_text': 'Privacy policy',
+            'more_link': 'https://ec.europa.eu/info/law/law-topic/data-protection_en',
+            'accept_text': 'Accept all',
+            'accept_selected_text': 'Save settings',
+            'reject_text': 'Necessary only',
+            'categories': {
+                'necessary':  {'label': 'Necessary',  'description': 'Required for the site to function.',          'required': true},
+                'analytics':  {'label': 'Analytics',  'description': 'Help us understand how visitors use the site.'},
+                'marketing':  {'label': 'Marketing',  'description': 'Used for personalised ads and content.'}
+            }
+        }"
+        data-lang-hu="{
+            'text': 'Weboldalunk sütiket használ a jobb felhasználói élményért.',
+            'more_text': 'Adatkezelési tájékoztató',
+            'more_link': 'https://ec.europa.eu/info/law/law-topic/data-protection_hu',
+            'accept_text': 'Mindent elfogad',
+            'accept_selected_text': 'Mentés',
+            'reject_text': 'Csak szükséges',
+            'categories': {
+                'necessary':  {'label': 'Szükséges',  'description': 'Az oldal működéséhez elengedhetetlen.',     'required': true},
+                'analytics':  {'label': 'Analitikai', 'description': 'Segít az oldal fejlesztésében.'},
+                'marketing':  {'label': 'Marketing',  'description': 'Célzott hirdetések és tartalom.'}
+            }
+        }"
+        data-debug="true"
+        data-callback="cookieWarnCallback">
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="site-header">
+            <div class="site-header-inner">
+                <h1><span class="brand">cookie-warn</span><span class="sep">/</span>Kategóriák</h1>
+                <span class="tag">GDPR ajánlott</span>
+            </div>
+            <a class="action-link" href="./index.html">← Összes demo</a>
+        </div>
+
+        <ul>
+            <li>Kategóriánkénti jelölőnégyzetek: <code>necessary</code> / <code>analytics</code> / <code>marketing</code></li>
+            <li><strong>Szükséges</strong> mindig bejelölt és nem távolítható el (<code>required: true</code>)</li>
+            <li>Három gomb: <em>Mindent elfogad</em>, <em>Mentés</em>, <em>Csak szükséges</em></li>
+            <li>A callback megkapja az <code>accepted</code> boolean-t és a <code>categories</code> objektumot — ellenőrizd a konzolt</li>
+            <li>A nyelvet a <code>&lt;html lang="hu"&gt;</code> attribútum határozza meg — nincs szükség JavaScript-re</li>
+        </ul>
+
+        <h2>Nyelv</h2>
+        <a class="action-link" href="./demo-categories-en.html">EN</a>
+        <strong class="action-link" style="margin-left:8px; cursor:default;">HU</strong>
+
+        <h2>Műveletek</h2>
+        <a class="action-link" href="#" onclick="cookieScript.reopen(); return false;">↺ Hozzájárulás törlése</a>
+
+        <h2>Navigáció</h2>
+        <ul class="demo-list">
+            <li><a href="./index.html">← Összes demo</a> <span class="desc"></span></li>
+            <li><a href="./demo.html">Alap példa</a> <span class="desc"></span></li>
+            <li><a href="./demo-params.html">Összes paraméter + elutasítás info</a> <span class="desc"></span></li>
+            <li><a href="./demo-light.html">Light téma</a> <span class="desc"></span></li>
+            <li><a href="./demo-minimal.html">Minimal téma</a> <span class="desc"></span></li>
+        </ul>
+
+        <h2>Kód</h2>
+        <div class="code-block">
+            <div class="code-header">
+                <span class="code-label">HTML</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>&lt;!-- lang="hu" a html elemen elegendő --&gt;
+&lt;html lang="hu"&gt;
+&lt;head&gt;
+  &lt;script
+    id="cookieScript"
+    data-lang-en="{
+      'text': 'We use cookies to improve your experience.',
+      'more_text': 'Privacy policy',
+      'more_link': 'https://example.com/privacy',
+      'accept_text': 'Accept all',
+      'accept_selected_text': 'Save settings',
+      'reject_text': 'Necessary only',
+      'categories': {
+        'necessary':  {'label': 'Necessary',  'description': 'Required for the site to function.', 'required': true},
+        'analytics':  {'label': 'Analytics',  'description': 'Help us understand how visitors use the site.'},
+        'marketing':  {'label': 'Marketing',  'description': 'Used for personalised ads and content.'}
+      }
+    }"
+    data-lang-hu="{
+      'text': 'Weboldalunk s&uuml;tiket haszn&aacute;l a jobb felhaszn&aacute;l&oacute;i &eacute;lm&eacute;ny&eacute;rt.',
+      'more_text': 'Adatkezel&eacute;si t&aacute;j&eacute;koztat&oacute;',
+      'more_link': 'https://example.com/adatkezeles',
+      'accept_text': 'Mindent elfogad',
+      'accept_selected_text': 'Ment&eacute;s',
+      'reject_text': 'Csak sz&uuml;ks&eacute;ges',
+      'categories': {
+        'necessary':  {'label': 'Sz&uuml;ks&eacute;ges',  'description': 'Az oldal m&uuml;k&ouml;d&eacute;s&eacute;hez elengedhetetlen.', 'required': true},
+        'analytics':  {'label': 'Analitikai', 'description': 'Seg&iacute;t az oldal fejleszt&eacute;s&eacute;ben.'},
+        'marketing':  {'label': 'Marketing',  'description': 'C&eacute;lzott hirdet&eacute;sek &eacute;s tartalom.'}
+      }
+    }"
+    data-callback="cookieWarnCallback"
+    src="cookie-warn.min.js"&gt;
+  &lt;/script&gt;
+&lt;/head&gt;
+
+&lt;script&gt;
+  function cookieWarnCallback(accepted, categories) {
+    if (categories &amp;&amp; categories.analytics) { /* analytics betöltése */ }
+    if (categories &amp;&amp; categories.marketing)  { /* hirdetések betöltése */ }
+  }
+&lt;/script&gt;</code></pre>
+        </div>
+
+        <div id="output"></div>
+    </div>
+</body>
+
+</html>

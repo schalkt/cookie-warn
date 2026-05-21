@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <title>cookie-warn – minimal theme</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./demo.css">
+    <script src="./demo.js"></script>
+    <script id="cookieScript" src="./../dist/cookie-warn.js"
+        data-theme="minimal"
+        data-lang-en="{
+            'text': 'This site uses cookies.',
+            'more_text': 'Learn more',
+            'more_link': 'https://ec.europa.eu/info/law/law-topic/data-protection_en',
+            'accept_text': 'Accept',
+            'reject_text': 'Decline'
+        }"
+        data-debug="true"
+        data-callback="cookieWarnCallback">
+    </script>
+    <style>
+        /* Simulate a typical white/neutral website so minimal theme blends in naturally */
+        body {
+            background-color: #f7f8fa;
+            background-image: none;
+            font-family: Georgia, 'Times New Roman', serif;
+            color: #222;
+        }
+        :root {
+            --bg: #f7f8fa;
+            --surface: #ffffff;
+            --surface2: #f3f4f6;
+            --border: #e5e7eb;
+            --border2: #d1d5db;
+            --text: #555;
+            --text-mid: #333;
+            --text-bright: #111;
+            --muted: #999;
+            --accent: #333;
+            --accent-dim: rgba(0,0,0,0.04);
+            --tag-fg: #555;
+            --code-fg: #333;
+        }
+        a { color: #333; border-bottom-color: rgba(0,0,0,0.2); }
+        a:hover { color: #000; border-bottom-color: rgba(0,0,0,0.5); }
+        h1 .brand { color: #111; }
+        h1 .sep { color: #bbb; }
+        .tag { background: rgba(0,0,0,0.05); color: #555; border-color: rgba(0,0,0,0.12); }
+        .tag::before { color: #999; }
+        .action-link { color: #888; border-color: #d1d5db; }
+        .action-link:hover { color: #333; border-color: rgba(0,0,0,0.3); background: rgba(0,0,0,0.04); }
+        #output { color: #333; border-left-color: #333; }
+        .demo-list li { background: #fff; }
+        .demo-list li:hover { border-color: rgba(0,0,0,0.2); background: #f9f9f9; }
+        ul li::before { color: #999; }
+        h2 { color: #bbb; }
+        code { color: #333; }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="site-header">
+            <div class="site-header-inner">
+                <h1><span class="brand">cookie-warn</span><span class="sep">/</span>Minimal theme</h1>
+                <span class="tag">data-theme="minimal"</span>
+            </div>
+            <a class="action-link" href="./index.html">← All demos</a>
+        </div>
+
+        <p>The minimal theme applies almost no styling — it inherits the page font, uses a frosted glass background, and renders small neutral buttons. Ideal for slotting into an existing site without overriding its design language.</p>
+
+        <ul>
+            <li>Nearly zero own styling — inherits page font and color</li>
+            <li>Frosted glass background (<code>backdrop-filter: blur</code>)</li>
+            <li>Small neutral buttons, easy to override with <code>data-style</code></li>
+            <li>Simulated serif body font to show theme adaptability</li>
+        </ul>
+
+        <h2>Actions</h2>
+        <a class="action-link" href="#" onclick="cookieScript.reopen(); return false;">↺ Reset consent</a>
+
+        <h2>Navigation</h2>
+        <ul class="demo-list">
+            <li><a href="./index.html">← All demos</a> <span class="desc"></span></li>
+            <li><a href="./demo.html">Dark theme (default)</a> <span class="desc"></span></li>
+            <li><a href="./demo-light.html">Light theme</a> <span class="desc"></span></li>
+            <li><a href="./demo-bootstrap.html">Bootstrap example</a> <span class="desc"></span></li>
+        </ul>
+
+        <h2>Code</h2>
+        <div class="code-block">
+            <div class="code-header">
+                <span class="code-label">HTML</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>&lt;script
+  id="cookieScript"
+  data-theme="minimal"
+  data-lang-en="{
+    'text': 'This site uses cookies.',
+    'more_text': 'Learn more',
+    'more_link': 'https://ec.europa.eu/info/law/law-topic/data-protection_en',
+    'accept_text': 'Accept',
+    'reject_text': 'Decline'
+  }"
+  data-callback="cookieWarnCallback"
+  src="cookie-warn.min.js"&gt;
+&lt;/script&gt;</code></pre>
+        </div>
+
+        <div id="output"></div>
+    </div>
+</body>
+
+</html>
