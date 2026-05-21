@@ -411,3 +411,7 @@ The key difference from a simple callback-based script loader: **always load GA4
 
 All cookies are set with `SameSite=Lax` and `Secure` (on HTTPS).
 
+## AI
+
+Parts of this project's code and documentation have been written with the assistance of AI (Claude by Anthropic) since 2026-05-21.
+

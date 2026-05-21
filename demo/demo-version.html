@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="./demo.css">
     <script src="./demo.js"></script>
     <script id="cookieScript" src="./../dist/cookie-warn.js"
-        data-version="2"
+        data-version="1"
         data-lang-en="{
             'text': 'We use cookies to improve your experience.',
             'more_text': 'Privacy policy',
@@ -35,7 +35,7 @@
         <div class="site-header">
             <div class="site-header-inner">
                 <h1><span class="brand">cookie-warn</span><span class="sep">/</span>Version</h1>
-                <span class="tag">data-version="2"</span>
+                <span class="tag">data-version="1"</span>
             </div>
             <a class="action-link" href="./index.html">← All demos</a>
         </div>
@@ -47,7 +47,7 @@
         </p>
 
         <ul>
-            <li>Current script has <code>data-version="2"</code></li>
+            <li>Current script has <code>data-version="1"</code></li>
             <li>Consent is stored together with the version in <code>cookieWarn.version</code></li>
             <li>On next load: if stored version &ne; <code>data-version</code>, all cookies are cleared and the banner re-appears</li>
             <li>Click <em>Simulate version mismatch</em> below to see this in action</li>
@@ -63,10 +63,10 @@
                 <span class="code-label">HTML</span>
                 <button class="copy-btn" onclick="copyCode(this)">Copy</button>
             </div>
-            <pre><code>&lt;!-- Bump data-version whenever your privacy policy changes --&gt;
+            <pre><code>&lt;!-- Start with data-version="1"; bump to "2", "3" etc. when your privacy policy changes --&gt;
 &lt;script
   id="cookieScript"
-  data-version="2"
+  data-version="1"
   data-lang-en="{
     'text': 'We updated our privacy policy. Please review your cookie preferences.',
     'accept_text': 'Accept all',
@@ -85,7 +85,7 @@
 &lt;!--
   Cookies written on consent:
     cookieWarn.categories = "necessary,analytics"
-    cookieWarn.version    = "2"
+    cookieWarn.version    = "1"
     cookieWarn.timestamp  = "2025-05-21T10:00:00.000Z"
 
   When data-version is bumped to "3":

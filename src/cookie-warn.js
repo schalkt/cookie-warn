@@ -28,19 +28,26 @@
         var langData = el.getAttribute("data-lang-" + lang);
         var data, parameters;
 
+        var defaultData = {
+            text: "Our website uses cookies.",
+            accept_text: "I accept",
+            more_text: "Click here for more information",
+            more_link: "https://ec.europa.eu/info/law/law-topic/data-protection_en",
+            reject_text: "I reject",
+            reject_info: null,
+            reject_link: null,
+            close_text: "Close",
+        };
+
         if (!langData) {
-            data = {
-                text: "Our website uses cookies.",
-                accept_text: "I accept",
-                more_text: "Click here for more information",
-                more_link: "https://ec.europa.eu/info/law/law-topic/data-protection_en",
-                reject_text: "I reject",
-                reject_info: null,
-                reject_link: null,
-                close_text: "Close",
-            };
+            data = defaultData;
         } else {
-            data = JSON.parse(langData.replace(/'/g, '"'));
+            try {
+                data = JSON.parse(langData.replace(/'/g, '"'));
+            } catch (e) {
+                console.warn(fn + ": failed to parse data-lang-" + lang + ", using defaults. " + e.message);
+                data = defaultData;
+            }
         }
 
         parameters = {
@@ -422,13 +429,16 @@
 
         var css = {
             style: cssBase.concat(activeThemeCss),
-            type: "text/css",
+            styleId: "cw-style-" + elementId,
             element: document.createElement("style"),
             append: function () {
+                // Guard: don't inject a second <style> on reopen()
+                if (document.getElementById(this.styleId)) { return; }
                 if (attributes.style) {
                     this.style = this.style.concat(attributes.style);
                 }
-                this.element.type = this.type;
+                this.element.id = this.styleId;
+                this.element.type = "text/css";
                 this.element.appendChild(document.createTextNode(this.style.join(" ")));
                 document.head.insertBefore(this.element, document.head.childNodes[0]);
             },
