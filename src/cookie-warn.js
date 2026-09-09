@@ -1,7 +1,7 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  *
- * @version v4.0.5
+ * @version v4.0.6
  * @link https://projects.schalk.hu/cookie-warn/demo/index.html
  * @author Tamas Schalk (https://github.com/schalkt)
  * @license MIT
@@ -10,7 +10,7 @@
 (function (fn) {
     "use strict";
 
-    var cwVersion = 'v4.0.5';
+    var cwVersion = 'v4.0.6';
     var elementId = fn + "Box";
     var cookieName = "cookieWarn.accepted";
     var categoriesCookieName = "cookieWarn.categories";

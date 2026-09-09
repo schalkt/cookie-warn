@@ -1,6 +1,6 @@
 {
     "name": "cookie-warn",
-    "version": "4.0.5",
+    "version": "4.0.6",
     "description": "EU cookie warn",
     "homepage": "https://projects.schalk.hu/cookie-warn/demo/index.html",
     "repository": {
@@ -27,7 +27,7 @@
         "release": "npm --no-git-tag-version version patch && npm run build:prod"
     },
     "devDependencies": {
-        "webpack": "^5.109.2",
-        "webpack-cli": "^7.2.2"
+        "webpack": "^5.110.3",
+        "webpack-cli": "^7.2.3"
     }
 }
