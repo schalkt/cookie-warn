@@ -1,7 +1,7 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  *
- * @version v4.0.7
+ * @version v4.0.8
  * @link https://projects.schalk.hu/cookie-warn/demo/index.html
  * @author Tamas Schalk (https://github.com/schalkt)
  * @license MIT
@@ -18,7 +18,7 @@
 })(function (fn) {
     "use strict";
 
-    var cwVersion = 'v4.0.7';
+    var cwVersion = 'v4.0.8';
     var elementId = fn + "Box";
     var cookieName = "cookieWarn.accepted";
     var categoriesCookieName = "cookieWarn.categories";
@@ -40,11 +40,13 @@
         try {
             return JSON.parse(str);
         } catch (e) {
+            // Private-use character as a temporary stand-in for escaped \' (never occurs in real text)
+            var placeholder = "";
             var normalized = str
-                .replace(/\\'/g, "\u0000")
+                .split("\\'").join(placeholder)
                 .replace(/([{\[,:]\s*)'/g, '$1"')
                 .replace(/'(\s*[}\],:])/g, '"$1')
-                .replace(/\u0000/g, "'");
+                .split(placeholder).join("'");
             return JSON.parse(normalized);
         }
     };
