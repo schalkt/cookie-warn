@@ -1,5 +1,6 @@
 
-const cookieWarnCallback = function (accepted, categories) {
+// Must be a global (window) property — cookie-warn looks it up via window[name]
+var cookieWarnCallback = function (accepted, categories) {
 
     let message = 'Callback fired &mdash; accepted: <strong>' + (accepted ? 'TRUE' : 'FALSE') + '</strong>';
 

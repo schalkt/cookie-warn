@@ -1,7 +1,7 @@
 /**
  * @preserve cookie-warn - EU cookie warn
  *
- * @version v4.0.6
+ * @version v4.0.7
  * @link https://projects.schalk.hu/cookie-warn/demo/index.html
  * @author Tamas Schalk (https://github.com/schalkt)
  * @license MIT
@@ -10,7 +10,7 @@
 (function (fn) {
     "use strict";
 
-    var cwVersion = 'v4.0.6';
+    var cwVersion = 'v4.0.7';
     var elementId = fn + "Box";
     var cookieName = "cookieWarn.accepted";
     var categoriesCookieName = "cookieWarn.categories";
@@ -24,10 +24,33 @@
         return;
     }
 
+    // Parse a data-lang-* value. Strict JSON is tried first; otherwise single-quoted
+    // pseudo-JSON is accepted. Only quotes acting as string delimiters are converted,
+    // so apostrophes inside texts (e.g. "We'd", "l'utilisation") are kept.
+    // An explicit \' is always treated as a literal apostrophe.
+    var parseLangData = function (str) {
+        try {
+            return JSON.parse(str);
+        } catch (e) {
+            var normalized = str
+                .replace(/\\'/g, "\u0000")
+                .replace(/([{\[,:]\s*)'/g, '$1"')
+                .replace(/'(\s*[}\],:])/g, '"$1')
+                .replace(/\u0000/g, "'");
+            return JSON.parse(normalized);
+        }
+    };
+
     var getAttributes = function () {
-        var lang = document.documentElement.lang ? document.documentElement.lang : "en";
+        var lang = document.documentElement.lang ? document.documentElement.lang.toLowerCase() : "en";
         var langData = el.getAttribute("data-lang-" + lang);
         var data, parameters;
+
+        // Fall back to the primary language subtag (e.g. "en-US" -> "en")
+        if (!langData && lang.indexOf("-") > 0) {
+            lang = lang.split("-")[0];
+            langData = el.getAttribute("data-lang-" + lang);
+        }
 
         var defaultData = {
             text: "Our website uses cookies.",
@@ -44,7 +67,7 @@
             data = defaultData;
         } else {
             try {
-                data = JSON.parse(langData.replace(/'/g, '"'));
+                data = parseLangData(langData);
             } catch (e) {
                 console.warn(fn + ": failed to parse data-lang-" + lang + ", using defaults. " + e.message);
                 data = defaultData;
@@ -318,14 +341,14 @@
             closeBox();
         },
 
+        // Re-show the banner with the current choices preselected. Stored consent is
+        // kept until the user saves a new decision.
         reopen: function () {
-            deleteCookies();
-            cookieWarnValue = undefined;
             var existingBox = document.getElementById(elementId);
             if (existingBox) {
                 existingBox.parentNode.removeChild(existingBox);
             }
-            warn();
+            warn(true);
         },
     };
 
@@ -333,7 +356,7 @@
 
     // --- render ---
 
-    var warn = function () {
+    var warn = function (isReopen) {
         if (!attributes.data) {
             console.error("Empty or invalid data-lang parameters");
             return;
@@ -361,7 +384,7 @@
             "#" + elementId + ".reject .reject_more {display:block;}",
             "#" + elementId + " .text {max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;flex-wrap:wrap;gap:10px 12px;justify-content:center;text-align:center;}",
             "#" + elementId + " .btn {white-space:nowrap;}",
-            "#" + elementId + " .btn-cw-action {white-space:nowrap;}",
+            "#" + elementId + " .btn-cw-action {white-space:nowrap;-webkit-appearance:none;appearance:none;line-height:1.4;}",
             "#" + elementId + " .reject_more {padding:0 10px;display:none;}",
             "#" + elementId + " .cw-categories {display:flex;flex-wrap:wrap;gap:8px;margin:8px 0;justify-content:center;width:100%;}",
             "#" + elementId + " .cw-cat-item {display:inline-flex;align-items:flex-start;flex-direction:column;padding:8px 13px;border-radius:10px;cursor:pointer;text-align:left;transition:background 0.18s,border-color 0.18s;}",
@@ -404,7 +427,7 @@
             minimal: [
                 "#" + elementId + " {transition:" + pos + " 0.45s cubic-bezier(0.16,1,0.3,1),opacity 0.3s ease;background:rgba(255,255,255,0.97);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-" + oppPos + ":1px solid rgba(0,0,0,0.09);}",
                 "#" + elementId + " {font-size:13px;line-height:1.5;}",
-                "#" + elementId + " .btn-cw-action {font-size:12px;font-weight:500;cursor:pointer;background:transparent;color:inherit;border:1px solid rgba(0,0,0,0.28);padding:5px 14px;border-radius:4px;margin-left:8px;transition:background 0.15s,border-color 0.15s;white-space:nowrap;}",
+                "#" + elementId + " .btn-cw-action {font-family:inherit;font-size:12px;font-weight:500;cursor:pointer;background:transparent;color:inherit;border:1px solid rgba(0,0,0,0.28);padding:5px 14px;border-radius:4px;margin-left:8px;transition:background 0.15s,border-color 0.15s;white-space:nowrap;}",
                 "#" + elementId + " .btn-cw-action:hover {background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.4);}",
                 "#" + elementId + " .btn-cw-action:focus-visible {outline:2px solid rgba(0,0,0,0.25);outline-offset:2px;}",
                 "#" + elementId + " .cw-cat-item {background:rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.1);}",
@@ -467,14 +490,25 @@
 
         var html = '<div class="text">' + escapeHtml(attributes.data.text) + info;
 
+        // Real <button> elements: keyboard (Enter/Space) works natively, no inline handlers needed
+        var button = function (action, text, id) {
+            return '<button type="button" class="' + btnClass + '"' + (id ? ' id="' + fn + id + '"' : '')
+                + ' data-cw-action="' + action + '">' + escapeHtml(text) + '</button> ';
+        };
+
         if (categoriesDef) {
+            // Preselect the previously stored choices (e.g. after reopen())
+            var storedCategories = cookie(categoriesCookieName);
+            var selected = storedCategories ? deserializeCategories(storedCategories, categoriesDef) : {};
+
             html += '<div class="cw-categories">';
             Object.keys(categoriesDef).forEach(function (k) {
                 var cat = categoriesDef[k];
                 var isRequired = !!cat.required;
                 html += '<label class="cw-cat-item' + (isRequired ? ' cw-cat-required' : '') + '">';
                 html += '<span class="cw-cat-header">';
-                html += '<input type="checkbox" data-cw-cat="' + escapeHtml(k) + '"' + (isRequired ? ' checked disabled' : '') + '> ';
+                html += '<input type="checkbox" data-cw-cat="' + escapeHtml(k) + '"'
+                    + (isRequired ? ' checked disabled' : (selected[k] ? ' checked' : '')) + '> ';
                 html += '<strong>' + escapeHtml(cat.label || k) + '</strong>';
                 html += '</span>';
                 if (cat.description) {
@@ -484,19 +518,16 @@
             });
             html += '</div>';
 
-            html += '<span class="' + btnClass + '" id="' + fn + 'Accept" onclick="' + fn + '.accept();" role="button" tabindex="0">'
-                + escapeHtml(attributes.data.accept_text || 'Accept all') + '</span> ';
-            html += '<span class="' + btnClass + '" onclick="' + fn + '.acceptSelected();" role="button" tabindex="0">'
-                + escapeHtml(attributes.data.accept_selected_text || 'Save settings') + '</span> ';
-            html += '<span class="' + btnClass + '" onclick="' + fn + '.reject();" role="button" tabindex="0">'
-                + escapeHtml(attributes.data.reject_text || 'Necessary only') + '</span>';
+            html += button('accept', attributes.data.accept_text || 'Accept all', 'Accept');
+            html += button('acceptSelected', attributes.data.accept_selected_text || 'Save settings');
+            html += button('reject', attributes.data.reject_text || 'Necessary only');
         } else {
-            var accept_button = '<span class="' + btnClass + '" id="' + fn + 'Accept" onclick="' + fn + '.accept();" role="button" tabindex="0">' + escapeHtml(attributes.data.accept_text) + "</span> ";
+            var accept_button = button('accept', attributes.data.accept_text, 'Accept');
             var reject_button = "";
             var reject_content = "";
 
             if (attributes.data.reject_text) {
-                reject_button = '<span class="' + btnClass + '" onclick="' + fn + '.reject();" role="button" tabindex="0">' + escapeHtml(attributes.data.reject_text) + "</span> ";
+                reject_button = button('reject', attributes.data.reject_text);
 
                 if (attributes.data.reject_info || attributes.data.reject_link) {
                     var rejectLink = safeUrl(attributes.data.reject_link);
@@ -505,7 +536,7 @@
                     if (rejectLink) {
                         reject_content += ' <a target="_blank" rel="noopener noreferrer" href="' + rejectLink + '">' + escapeHtml(attributes.data.reject_link) + "</a> ";
                     }
-                    reject_content += ' <span class="' + btnClass + '" id="' + fn + 'Close" onclick="' + fn + '.close();" role="button" tabindex="0">' + escapeHtml(attributes.data.close_text) + "</span> ";
+                    reject_content += ' ' + button('close', attributes.data.close_text, 'Close');
                     reject_content += " </span> ";
                 }
             }
@@ -520,11 +551,19 @@
             console.log("innerHTML: " + wbox.innerHTML);
         }
 
+        var actionButtons = wbox.querySelectorAll('[data-cw-action]');
+        for (var i = 0; i < actionButtons.length; i++) {
+            actionButtons[i].addEventListener('click', function () {
+                window[fn][this.getAttribute('data-cw-action')]();
+            });
+        }
+
         document.body.appendChild(wbox);
 
         // data-once: immediately persist a "rejected" state so the banner won't re-appear
-        // on subsequent visits if the user closes the page without interacting
-        if (attributes.once) {
+        // on subsequent visits if the user closes the page without interacting.
+        // Skipped on reopen() so an existing consent is not overwritten.
+        if (attributes.once && !isReopen) {
             if (categoriesDef) {
                 saveCategories(buildRequiredCategories(categoriesDef));
             } else {
@@ -547,7 +586,8 @@
             console.log("cookieWarnValue: " + cookieWarnValue);
         }
 
-        if (readyState == "complete") {
+        // Run as soon as the DOM is parsed; no need to wait for images/iframes ("complete")
+        if (readyState != "loading") {
 
             initReopenLinks();
 
@@ -573,9 +613,7 @@
                 check(cookieWarnValue);
             }
         } else {
-            setTimeout(function () {
-                isDOMready();
-            }, 200);
+            document.addEventListener("DOMContentLoaded", isDOMready);
         }
     };
 

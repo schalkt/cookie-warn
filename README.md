@@ -48,7 +48,9 @@ All parameters are optional.
 
 ### `data-lang-*` attributes
 
-Texts and links are set per language via `data-lang-{code}` on the script/div element. The language is detected from `<html lang="...">`. If no `data-lang-*` attribute matches the current language, English defaults are used automatically.
+Texts and links are set per language via `data-lang-{code}` on the script/div element. The language is detected from `<html lang="...">`; regional codes fall back to the primary language (e.g. `lang="en-US"` uses `data-lang-en`). If no `data-lang-*` attribute matches the current language, English defaults are used automatically.
+
+The value may be strict JSON or JSON with single quotes. Apostrophes inside texts are kept (`'text': 'We\'d like to use cookies'` or simply `'We'd like…'`); use `\'` if a text contains an apostrophe right next to a `,` `:` `}` or `]`.
 
 | Key | Default | Description |
 |-----|---------|-------------|
@@ -69,7 +71,7 @@ Texts and links are set per language via `data-lang-{code}` on the script/div el
 |-----------|---------|-------------|
 | `data-delay` | `500` | Milliseconds before the banner appears |
 | `data-expire` | `365` | Cookie expiry in days |
-| `data-domain` | — | Cookie domain (e.g. `*.example.com`) |
+| `data-domain` | — | Cookie domain (e.g. `.example.com` to share consent across subdomains) |
 | `data-path` | `/` | Cookie path |
 | `data-secure` | auto (https = true) | Force cookie `Secure` flag |
 | `data-callback` | `"cookieWarnCallback"` | Name of the global callback function |
@@ -150,7 +152,7 @@ The displayed language is read from `<html lang="...">` when the script loads. T
     }"
     data-callback="cookieWarnCallback"
     data-expire="365"
-    data-domain="*.example.com"
+    data-domain=".example.com"
     data-path="/"
     data-secure="true"
     data-delay="750"
@@ -292,7 +294,7 @@ The minimal theme has almost no own styling — it inherits the page's font and 
 | `cookieScript.acceptSelected()` | Accept only the checked categories (categories mode only) |
 | `cookieScript.reject()` | Accept necessary-only (categories mode) or reject all (simple mode) |
 | `cookieScript.close()` | Close the banner without changing the stored consent |
-| `cookieScript.reopen()` | Delete consent cookies and re-show the banner (use in a "Cookie settings" footer link) |
+| `cookieScript.reopen()` | Re-show the banner with the current choices preselected (use in a "Cookie settings" footer link). The stored consent stays until the user saves a new decision. |
 
 ### Consent withdrawal example
 
