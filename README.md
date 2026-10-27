@@ -226,7 +226,7 @@ Adds per-category checkboxes. Required categories are always checked and cannot 
 
 ### Example 4 – multilanguage with a `<div>` element
 
-The script tag can be replaced with a `<div>` if you prefer to keep scripts at the bottom.
+The script tag can be replaced with a `<div>` if you prefer to keep the configuration in the body. The script may be loaded in `<head>` or at the bottom of the page; if the element is not in the DOM yet, it is looked up again on `DOMContentLoaded`.
 
 ```html
 <html lang="hu">

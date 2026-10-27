@@ -7,7 +7,15 @@
  * @license MIT
  */
 
-(function (fn) {
+// Bootstrap: the target element may be a <div> later in the body (script loaded in <head>).
+// If it is not in the DOM yet, look it up again once the document is parsed.
+(function (init, fn) {
+    if (document.getElementById(fn) || document.readyState !== "loading") {
+        init(fn);
+    } else {
+        document.addEventListener("DOMContentLoaded", function () { init(fn); });
+    }
+})(function (fn) {
     "use strict";
 
     var cwVersion = 'v4.0.7';
@@ -464,7 +472,6 @@
                     this.style = this.style.concat(attributes.style);
                 }
                 this.element.id = this.styleId;
-                this.element.type = "text/css";
                 this.element.appendChild(document.createTextNode(this.style.join(" ")));
                 document.head.insertBefore(this.element, document.head.childNodes[0]);
             },
@@ -618,4 +625,4 @@
     };
 
     isDOMready();
-})("cookieScript");
+}, "cookieScript");
